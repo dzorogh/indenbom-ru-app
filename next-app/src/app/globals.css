@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 html, body {
-    @apply h-full
+    height: 100%;
 }

@@ -153,7 +153,7 @@ export interface FamilyTreeProps {
 export const FamilyTree = ({couples, people}: FamilyTreeProps) => {
 
     return (
-        <div className="h-full w-full bg-zinc-100">
+        <div className="h-full w-full bg-blue-50/50">
             <ReactFlowProvider>
                 <LayoutFlow couples={couples} people={people}/>
             </ReactFlowProvider>

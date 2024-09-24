@@ -18,7 +18,7 @@ services:
       - ./next-app/public:/app/public
     restart: always
     ports:
-      - 3001:3000
+      - 3002:3000
     networks:
       - my_network
 
