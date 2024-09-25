@@ -9,6 +9,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
         wikipedia: <Icon icon="tabler:brand-wikipedia"/>,
         facebook: <Icon icon="tabler:brand-facebook"/>,
         telegram: <Icon icon="tabler:brand-telegram"/>,
+        vk: <Icon icon="tabler:brand-vk"/>,
         archive: <Icon icon="tabler:archive"/>,
     }
 
