@@ -124,7 +124,6 @@ const LayoutFlow = ({couples, people}: FamilyTreeProps) => {
 
     const layouted = getLayoutedElements(nodes, edges);
 
-    console.log(layouted.edges)
 
     const nodeClassName = (node) => node.type;
 
