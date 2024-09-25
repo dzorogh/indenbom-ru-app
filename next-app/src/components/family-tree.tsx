@@ -12,7 +12,7 @@ import '@xyflow/react/dist/style.css';
 import Dagre from '@dagrejs/dagre';
 import {Couple, nodeTypes, NodeTypes, Person} from "../types";
 
-const personWidth = 300;
+const personWidth = 450;
 const personHeight = 150;
 const personHeightSmall = 75;
 

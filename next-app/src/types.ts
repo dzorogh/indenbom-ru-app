@@ -47,7 +47,8 @@ export interface PersonBase {
             type: string,
             value: string
         }
-    ]
+    ],
+    avatar_url?: string
 }
 
 export interface Person extends PersonBase {
