@@ -19,6 +19,14 @@ export interface Couple extends CoupleBase {
 export interface Couple extends CoupleBase {
 }
 
+export enum DatePrecision {
+    Exact = 'exact',
+    Approximate = 'approximate',
+    Year = 'year',
+    Decade = 'decade',
+    Century = 'century'
+}
+
 export interface PersonBase {
     id: number;
     created_at: string;
@@ -29,8 +37,8 @@ export interface PersonBase {
     place_of_birth: string | null;
     birth_date: string | null;
     death_date: string | null;
-    birth_date_precision: string;
-    death_date_precision: string;
+    birth_date_precision: DatePrecision;
+    death_date_precision: DatePrecision;
     parent_couple_id: number | null;
     full_name: string;
     contacts: [
