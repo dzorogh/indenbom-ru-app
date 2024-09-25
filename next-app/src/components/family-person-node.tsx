@@ -6,12 +6,13 @@ import {PersonNode} from "../types";
 
 export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
     const icons = {
-        wikipedia: <Icon icon="tabler:brand-wikipedia"></Icon>,
-        facebook: <Icon icon="tabler:brand-facebook"></Icon>,
-        telegram: <Icon icon="tabler:brand-telegram"></Icon>,
+        wikipedia: <Icon icon="tabler:brand-wikipedia"/>,
+        facebook: <Icon icon="tabler:brand-facebook"/>,
+        telegram: <Icon icon="tabler:brand-telegram"/>,
+        archive: <Icon icon="tabler:archive"/>,
     }
 
-    const defaultIcon = <Icon icon="tabler:world"></Icon>
+    const defaultIcon = <Icon icon="tabler:world"/>
 
     return (
         <>
@@ -28,7 +29,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
                             return (
                                 <a key={contact.id} target="_blank" href={contact.value}
                                    className="text-slate-600 transition-colors hover:text-blue-800">
-                                    { icons[contact.type] ?? defaultIcon }
+                                    {icons[contact.type] ?? defaultIcon}
                                 </a>
                             )
                         })}
