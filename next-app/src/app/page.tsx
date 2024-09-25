@@ -18,8 +18,8 @@ export async function generateStaticParams() {
 
 async function getData() {
     try {
-        const couplesResponse = await fetch('http://147.45.171.210:9081/api/v1/family/couples');
-        const peopleResponse = await fetch('http://147.45.171.210:9081/api/v1/family/people');
+        const couplesResponse = await fetch('https://admin.indenbom.ru/api/v1/family/couples');
+        const peopleResponse = await fetch('https://admin.indenbom.ru/api/v1/family/people');
 
         if (!couplesResponse.ok || !peopleResponse.ok) {
             throw new Error('Failed to fetch data');
@@ -27,8 +27,6 @@ async function getData() {
 
         const couplesData = await couplesResponse.json();
         const peopleData = await peopleResponse.json();
-
-        console.log(couplesData);
 
         return {
             couples: couplesData.data || [],
