@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {Handle, NodeProps, Position} from '@xyflow/react';
-import {CoupleNode} from "../types";
+import {CoupleNode} from "@/types";
 
 export default memo(function FamilyCoupleNode(props: NodeProps<CoupleNode>) {
     return (

@@ -27,6 +27,23 @@ export enum DatePrecision {
     Century = 'century'
 }
 
+export enum PersonContactType {
+    Wikipedia = 'wikipedia',
+    Facebook = 'facebook',
+    Telegram = 'telegram',
+    Vk = 'vk',
+    Archive = 'archive',
+}
+
+export interface Photo {
+    media_url: string,
+    description?: string,
+    approximate_date?: string,
+    place?: string,
+    order?: number | null,
+    position_on_photo?: string
+}
+
 export interface PersonBase {
     id: number;
     created_at: string;
@@ -41,14 +58,15 @@ export interface PersonBase {
     death_date_precision: DatePrecision;
     parent_couple_id: number | null;
     full_name: string;
-    contacts: [
+    contacts:
         {
             id: number,
-            type: string,
+            type: PersonContactType,
             value: string
-        }
-    ],
-    avatar_url?: string
+        }[]
+    ,
+    avatar_url?: string,
+    photos?: Photo[]
 }
 
 export interface Person extends PersonBase {
@@ -104,3 +122,4 @@ export const nodeTypes = {
 
 export type PersonNode = Node<PersonNodeData, NodeTypes.PersonNode>
 export type CoupleNode = Node<CoupleNodeData, NodeTypes.CoupleNode>
+

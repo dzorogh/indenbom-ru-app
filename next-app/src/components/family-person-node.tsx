@@ -1,56 +1,51 @@
 import React, {memo} from 'react';
 import {Handle, NodeProps, Position} from '@xyflow/react';
-import {Icon} from "@iconify-icon/react";
 import FamilyPersonDates from "./family-person-dates";
-import {PersonNode} from "../types";
+import {PersonNode} from "@/types";
 import Image from "next/image";
+import Link from "next/link";
+import FamilyPersonContactIcon from "@/components/family-person-contact-icon";
+import {SmileIcon} from "lucide-react";
 
 export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
-    const icons = {
-        wikipedia: <Icon icon="tabler:brand-wikipedia"/>,
-        facebook: <Icon icon="tabler:brand-facebook"/>,
-        telegram: <Icon icon="tabler:brand-telegram"/>,
-        vk: <Icon icon="tabler:brand-vk"/>,
-        archive: <Icon icon="tabler:archive"/>,
-    }
-
-    const defaultIcon = <Icon icon="tabler:world"/>
 
     return (
         <>
             <div
                 className="h-full bg-white  z-10 rounded-r-3xl rounded-l-[150px] shadow-lg shadow-slate-200 flex cursor-default gap-4">
 
-                <div>
+                <Link href={`/person/${props.data.person.id}`} className="hover:ring-4 ring-primary rounded-full">
                     {props.data.person.avatar_url ?
                         <Image
+                            priority={true}
                             src={props.data.person.avatar_url}
                             width={150}
                             height={150}
-                            objectFit="contain"
                             className="rounded-full"
                             alt={props.data.person.full_name}
                         />
                         :
                         <div className="w-[150px] h-[150px] rounded-full bg-slate-50 flex items-center justify-center">
-                            <Icon icon="tabler:camera" className="text-2xl opacity-20" />
+                            <SmileIcon className="opacity-20" />
                         </div>
                     }
-                </div>
+                </Link>
 
 
                 <div className="flex py-4 pr-4 justify-between flex-col">
                     <div className="flex flex-col gap-2">
                         <div>
-                            {props.data.person.full_name}
+                            <Link href={`/person/${props.data.person.id}`} className="hover:underline hover:text-primary underline-offset-4">
+                                {props.data.person.full_name}
+                            </Link>
                         </div>
 
-                        <div className="nodrag text-2xl">
+                        <div className="nodrag text-2xl flex gap-2">
                             {props.data.person.contacts?.map(contact => {
                                 return (
                                     <a key={contact.id} target="_blank" href={contact.value}
-                                       className="text-slate-600 transition-colors hover:text-blue-800">
-                                        {icons[contact.type] ?? defaultIcon}
+                                       className="text-slate-600 transition-colors hover:text-primary">
+                                        <FamilyPersonContactIcon type={contact.type} size={20}/>
                                     </a>
                                 )
                             })}

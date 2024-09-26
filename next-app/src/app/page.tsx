@@ -1,12 +1,5 @@
 import React from 'react';
-import {FamilyTree} from "../components/family-tree";
-import {Metadata} from "next";
-import {Couple, Person} from "../types";
-
-// either Static metadata
-export const metadata: Metadata = {
-    title: 'Семейное дерево фамилии Инденбом',
-}
+import {FamilyTree} from "@/components/family-tree";
 
 export const revalidate = 5
 
