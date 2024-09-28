@@ -1,12 +1,14 @@
-import Image from "next/image";
 import {Photo} from "@/types";
 import {Article} from "@/components/article";
 import {Calendar03Icon, Location01Icon, QuestionIcon} from "hugeicons-react";
+import {FamilyPersonGalleryItemImage} from "@/components/family-person-gallery-item-image";
 
 export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
+
     return (
         <div className="flex flex-col bg-white overflow-hidden break-words rounded-md shadow-lg">
-            <Image src={photo.media_url} width={600} height={600} alt="" className="rounded-md"/>
+
+            <FamilyPersonGalleryItemImage photo={photo}/>
 
             {photo.description || photo.approximate_date || photo.place ?
                 <div className="p-4 flex flex-col gap-4">
