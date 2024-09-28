@@ -66,7 +66,8 @@ export interface PersonBase {
         }[]
     ,
     avatar_url?: string,
-    photos?: Photo[]
+    photos?: Photo[],
+    article: string
 }
 
 export interface Person extends PersonBase {

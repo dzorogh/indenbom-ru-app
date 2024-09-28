@@ -14,7 +14,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
             <div
                 className="h-full bg-white  z-10 rounded-r-3xl rounded-l-[150px] shadow-lg shadow-slate-200 flex cursor-default gap-4">
 
-                <Link href={`/person/${props.data.person.id}`} className="hover:ring-4 ring-primary rounded-full">
+                <Link href={`/person/${props.data.person.id}`} className="transition-shadow hover:ring-4 ring-primary rounded-full">
                     {props.data.person.avatar_url ?
                         <Image
                             priority={true}
@@ -35,7 +35,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
                 <div className="flex py-4 pr-4 justify-between flex-col">
                     <div className="flex flex-col gap-2">
                         <div>
-                            <Link href={`/person/${props.data.person.id}`} className="hover:underline hover:text-primary underline-offset-4">
+                            <Link href={`/person/${props.data.person.id}`} className="transition-colors hover:underline hover:text-primary underline-offset-4">
                                 {props.data.person.full_name}
                             </Link>
                         </div>
