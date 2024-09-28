@@ -1,16 +1,20 @@
 import {Person} from "@/types";
 import {notFound} from "next/navigation";
 import Image from "next/image";
-import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {ChevronLeft, SmileIcon} from "lucide-react";
 import FamilyPersonDates from "@/components/family-person-dates";
 import React from "react";
 import FamilyPersonContactIcon from "@/components/family-person-contact-icon";
-import {Camera02Icon, Tree01Icon} from "hugeicons-react";
 import {FamilyPersonGallery} from "@/components/family-person-gallery";
 import {Metadata, ResolvingMetadata} from "next";
 import {Article} from "@/components/article";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {SmileIcon} from "hugeicons-react";
 
 type Props = {
     params: { id: string }
@@ -18,7 +22,7 @@ type Props = {
 }
 
 export async function generateMetadata(
-    { params, searchParams }: Props,
+    {params, searchParams}: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // read route params
@@ -59,7 +63,6 @@ export default async function Page({params}: { params: { id: number } }) {
 
     return (
         <>
-
             <div className="container mx-auto px-4">
                 <div className="py-12 flex flex-col gap-12">
                     <div className="shadow-lg rounded-md overflow-hidden bg-white pb-12">
@@ -116,10 +119,20 @@ export default async function Page({params}: { params: { id: number } }) {
                             <div className="flex gap-4">
                                 {person.contacts?.map(contact => {
                                     return (
-                                        <Link key={contact.id} target="_blank" href={contact.value}
-                                              className="text-3xl text-slate-600 transition-colors hover:text-primary">
-                                            <FamilyPersonContactIcon type={contact.type} size={40}/>
-                                        </Link>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger>
+                                                    <Link key={contact.id} target="_blank" href={contact.value}
+                                                          className="text-3xl text-slate-600 transition-colors hover:text-primary">
+                                                        <FamilyPersonContactIcon type={contact.type} size={40}/>
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>{new URL(contact.value).host}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+
                                     )
                                 })}
                             </div>
