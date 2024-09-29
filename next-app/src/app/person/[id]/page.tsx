@@ -15,6 +15,15 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import {SmileIcon} from "hugeicons-react";
+import {FamilyPersonHeadingBadge} from "@/components/family-person-heading-badge";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 type Props = {
     params: { id: string }
@@ -64,7 +73,19 @@ export default async function Page({params}: { params: { id: number } }) {
     return (
         <>
             <div className="container mx-auto px-4">
-                <div className="py-12 flex flex-col gap-12">
+                <div className="py-6 md:py-12 flex flex-col gap-6 md:gap-12">
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/">Дерево</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator/>
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>{person.full_name}</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
+
                     <div className="shadow-lg rounded-md overflow-hidden bg-white pb-12">
                         <div className="relative h-48 bg-gradient-to-r rounded-t-sm from-stone-100 to-stone-200 m-0.5">
                             <Image
