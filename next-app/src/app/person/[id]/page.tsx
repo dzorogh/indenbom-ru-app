@@ -73,10 +73,11 @@ export default async function Page({params}: { params: { id: number } }) {
                                 priority={true}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1600px) 2000px, 100vw"
                                 className="object-cover rounded-t-sm"
-                                alt={person.full_name}>
+                                alt="Фон с липой">
                             </Image>
 
-                            <div className="flex justify-center md:justify-start absolute -bottom-[125px] px-8 w-full">
+                            <div
+                                className="flex flex-col md:flex-row justify-center items-center md:justify-start absolute -bottom-[125px] px-8 w-full">
                                 {person.avatar_url ?
                                     <Image
                                         priority={true}
@@ -92,6 +93,21 @@ export default async function Page({params}: { params: { id: number } }) {
                                         <SmileIcon size={50} className="opacity-20"/>
                                     </div>
                                 }
+
+                                <div className="flex flex-wrap justify-center items-center md:ml-10 gap-2 md:gap-4">
+                                    {person.contacts?.length ?
+                                        <FamilyPersonHeadingBadge>Контакты и ссылки</FamilyPersonHeadingBadge>
+                                        : ""
+                                    }
+                                    {person.article ?
+                                        <FamilyPersonHeadingBadge>Биография</FamilyPersonHeadingBadge>
+                                        : ""
+                                    }
+                                    {person.photos?.length ?
+                                        <FamilyPersonHeadingBadge>Фотографии</FamilyPersonHeadingBadge>
+                                        : ""
+                                    }
+                                </div>
                             </div>
 
                         </div>
