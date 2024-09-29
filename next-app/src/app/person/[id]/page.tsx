@@ -44,7 +44,7 @@ export async function generateMetadata(
     //const previousImages = (await parent).openGraph?.images || []
 
     return {
-        title: person.full_name,
+        title: person.full_name + " - " + (await parent).title.absolute,
     }
 }
 
@@ -58,17 +58,12 @@ async function getData(id: string) {
 
         return (await personResponse.json())['data'];
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return null;
+        return notFound()
     }
 }
 
 export default async function Page({params}: { params: { id: number } }) {
     const person = await getData(String(params.id)) as Person;
-
-    if (!person) {
-        return notFound()
-    }
 
     return (
         <>
@@ -130,10 +125,9 @@ export default async function Page({params}: { params: { id: number } }) {
                                     }
                                 </div>
                             </div>
-
                         </div>
 
-                        <div className="z-20 relative md:ml-80 mx-6 md:mt-8 mt-40  min-h-48 flex flex-col gap-8">
+                        <div className="z-20 relative md:ml-80 mx-6 md:mt-10 mt-40 min-h-48 flex flex-col gap-8">
                             <h1 className="text-3xl md:text-5xl text-center md:text-left font-bold">
                                 {person.full_name}
                             </h1>
@@ -153,37 +147,107 @@ export default async function Page({params}: { params: { id: number } }) {
                                 </div>
                             </div>
 
-                            <div className="flex gap-4">
-                                {person.contacts?.map(contact => {
-                                    return (
-                                        <TooltipProvider>
-                                            <Tooltip>
-                                                <TooltipTrigger>
-                                                    <Link key={contact.id} target="_blank" href={contact.value}
-                                                          className="text-3xl text-slate-600 transition-colors hover:text-primary">
-                                                        <FamilyPersonContactIcon type={contact.type} size={40}/>
-                                                    </Link>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p>{new URL(contact.value).host}</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
+                            {person.contacts?.length ?
+                                <div className="flex gap-4">
+                                    {person.contacts?.map(contact => {
+                                        return (
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger>
+                                                        <Link key={contact.id} target="_blank" href={contact.value}
+                                                              className="text-3xl text-slate-600 transition-colors hover:text-primary">
+                                                            <FamilyPersonContactIcon type={contact.type} size={40}/>
+                                                        </Link>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <p>{new URL(contact.value).host}</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
 
+                                        )
+                                    })}
+                                </div>
+
+                                : ""
+                            }
+
+
+                            <div>
+                                <h3 className="scroll-m-20 font-semibold tracking-tight">Семья</h3>
+                                {person.parent_couple?.first_person ?
+                                    <div className="flex gap-2">
+                                        Отец:
+                                        <Link className="underline"
+                                              href={`/person/${person.parent_couple.first_person.id}`}>
+                                            {person.parent_couple.first_person.full_name}
+                                        </Link>
+                                    </div>
+                                    : ""
+                                }
+                                {person.parent_couple?.second_person ?
+                                    <div className="flex gap-2">
+                                        Мать:
+                                        <Link href={`/person/${person.parent_couple.second_person.id}`}
+                                              className="underline">
+                                            {person.parent_couple.second_person.full_name}
+                                        </Link>
+                                    </div>
+                                    : ""
+                                }
+                                {person.couples?.map(couple => {
+                                    return (
+                                        <div>
+                                            {couple.second_person && couple.first_person_id === person.id ?
+                                                <div className="flex gap-2">
+                                                    Жена:
+                                                    <Link className="underline"
+                                                          href={`/person/${couple.second_person.id}`}>
+                                                        {couple.second_person.full_name}
+                                                    </Link>
+                                                </div>
+                                                : ""
+                                            }
+
+                                            {couple.first_person && couple.second_person_id === person.id ?
+                                                <div className="flex gap-2">
+                                                    Муж:
+                                                    <Link className="underline"
+                                                          href={`/person/${couple.first_person.id}`}>
+                                                        {couple.first_person.full_name}
+                                                    </Link>
+                                                </div>
+                                                : ""
+                                            }
+
+                                            {couple.children?.length ?
+                                                <div className="pl-4 flex gap-2 flex-wrap">
+                                                    Дети:
+                                                    {couple.children.map<React.ReactNode>(child =>
+                                                        <Link className="underline"
+                                                              href={`/person/${child.id}`}>{child.full_name}</Link>
+                                                    )}
+                                                </div>
+                                                : ""
+                                            }
+                                        </div>
                                     )
                                 })}
                             </div>
 
-                            <div>
-                                <Article content={person.article}/>
-                            </div>
+                            {person.article ?
+                                <div className="border-t border-slate-200 pt-8">
+                                    <Article content={person.article}/>
+                                </div>
+                                : ""
+                            }
                         </div>
                     </div>
 
                     {person.photos && person.photos.length ?
                         <div>
                             <h2 className="scroll-m-20 mb-3 text-xl font-semibold tracking-tight first:mt-0">
-                                Фотографии
+                            Фотографии
                             </h2>
                             <FamilyPersonGallery photos={person.photos}/>
                         </div>

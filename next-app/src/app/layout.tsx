@@ -4,8 +4,9 @@ import './globals.css'
 import React from "react";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {Tree01Icon} from "hugeicons-react";
-import { GeistSans } from 'geist/font/sans';
+import {GeistSans} from 'geist/font/sans';
+import icon from "@/app/icon.svg"
+import Image from 'next/image';
 
 
 export const metadata: Metadata = {
@@ -26,11 +27,11 @@ export default function RootLayout(
             <div className="z-30 bg-white shadow-lg">
                 <div className="container mx-auto px-4 h-12 flex items-center">
                     <nav className="flex items-center space-x-4 lg:space-x-6">
-                        {/*<Link href="/" className="text-sm font-bold transition-colors hover:text-primary flex">*/}
-                        {/*    Дерево*/}
-                        {/*</Link>*/}
                         <Button variant="secondary" asChild>
-                            <Link href="/"><Tree01Icon className="mr-2 h-4 w-4"/> Дерево </Link>
+                            <Link href="/">
+                                <Image alt="Indenbom family logo" src={icon} priority className="mr-2 h-4 w-4"/>
+                                Дерево
+                            </Link>
                         </Button>
                     </nav>
                 </div>

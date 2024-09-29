@@ -11,8 +11,8 @@ interface CoupleBase {
 }
 
 export interface Couple extends CoupleBase {
-    firstPerson?: Person;
-    secondPerson?: Person;
+    first_person?: Person;
+    second_person?: Person;
     children?: Person[];
 }
 
@@ -41,7 +41,7 @@ export interface Photo {
     approximate_date?: string,
     place?: string,
     order?: number | null,
-    position_on_photo?: string
+    people?: Person[]
 }
 
 export interface PersonBase {
@@ -57,6 +57,7 @@ export interface PersonBase {
     birth_date_precision: DatePrecision;
     death_date_precision: DatePrecision;
     parent_couple_id: number | null;
+    parent_couple: Couple;
     full_name: string;
     contacts:
         {
@@ -67,7 +68,9 @@ export interface PersonBase {
     ,
     avatar_url?: string,
     photos?: Photo[],
-    article: string
+    article: string,
+    position_on_photo?: string,
+    couples?: Couple[]
 }
 
 export interface Person extends PersonBase {
