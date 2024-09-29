@@ -10,7 +10,7 @@ export const Article = ({content}: { content: string }) => {
         h2: (props) => <h2
             className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0"  {...props} />,
         p: (props) => <p className="leading-7 [&:not(:first-child)]:mt-6"  {...props} />,
-        a: (props) => <a target="_blank" className="underline underline-offset-2 text-primary" {...props} />
+        a: (props) => <a target="_blank" className="underline underline-offset-2 text-primary  break-words" {...props} />
     }
 
     const options = {
@@ -24,7 +24,7 @@ export const Article = ({content}: { content: string }) => {
     } as SerializeOptions;
 
     return (
-        <div className="max-w-prose">
+        <div className="max-w-prose break-words">
             <MDXRemote options={options} source={content} components={components}/>
         </div>
     )
