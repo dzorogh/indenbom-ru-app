@@ -4,6 +4,7 @@ import {Calendar03Icon, Location01Icon} from "hugeicons-react";
 import {FamilyPersonGalleryItemImage} from "@/components/family-person-gallery-item-image";
 import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
+import {AppLink} from "@/components/app-link";
 
 export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
 
@@ -27,9 +28,9 @@ export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
                         <div className="flex flex-col">
                             {photo.people.map(person =>
                                 <div className="text-xs">
-                                    <Link className="underline" href={`/person/${person.id}`}>
+                                    <AppLink href={`/person/${person.id}`}>
                                         {person.full_name}
-                                    </Link>
+                                    </AppLink>
                                     {person.position_on_photo ?
                                         <span className="text-slate-300"> {person.position_on_photo}</span>
                                         : ""

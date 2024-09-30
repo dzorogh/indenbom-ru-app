@@ -1,21 +1,10 @@
 import {Person} from "@/types";
 import {notFound} from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import FamilyPersonDates from "@/components/family-person-dates";
 import React from "react";
-import FamilyPersonContactIcon from "@/components/family-person-contact-icon";
 import {FamilyPersonGallery} from "@/components/family-person-gallery";
 import {Metadata, ResolvingMetadata} from "next";
 import {Article} from "@/components/article";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {SmileIcon} from "hugeicons-react";
-import {FamilyPersonHeadingBadge} from "@/components/family-person-heading-badge";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -24,6 +13,9 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import {PersonHeading} from "@/app/person/[id]/person-heading";
+import {PersonLinks} from "@/app/person/[id]/person-links";
+import {PersonRelatives} from "@/app/person/[id]/person-relatives";
 
 type Props = {
     params: { id: string }
@@ -45,6 +37,7 @@ export async function generateMetadata(
 
     return {
         title: person.full_name + " - " + (await parent).title.absolute,
+        description: `${person.full_name} — биография, годы жизни, родственники, фотографии, контакты, ссылки`
     }
 }
 
@@ -82,50 +75,7 @@ export default async function Page({params}: { params: { id: number } }) {
                     </Breadcrumb>
 
                     <div className="shadow-lg rounded-md overflow-hidden bg-white pb-12">
-                        <div className="relative h-48 bg-gradient-to-r rounded-t-sm from-stone-100 to-stone-200 m-0.5">
-                            <Image
-                                src="https://live.staticflickr.com/65535/53590278329_9620f94c83_k.jpg"
-                                fill={true}
-                                priority={true}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1600px) 2000px, 100vw"
-                                className="object-cover rounded-t-sm"
-                                alt="Фон с липой">
-                            </Image>
-
-                            <div
-                                className="flex flex-col md:flex-row justify-center items-center md:justify-start absolute -bottom-[125px] px-8 w-full">
-                                {person.avatar_url ?
-                                    <Image
-                                        priority={true}
-                                        src={person.avatar_url}
-                                        width={250}
-                                        height={250}
-                                        className="rounded-full border-[10px] border-white"
-                                        alt={person.full_name}
-                                    />
-                                    :
-                                    <div
-                                        className="w-[250px] h-[250px] rounded-full bg-slate-50 flex items-center justify-center">
-                                        <SmileIcon size={50} className="opacity-20"/>
-                                    </div>
-                                }
-
-                                <div className="flex flex-wrap justify-center items-center md:ml-10 gap-2 md:gap-4">
-                                    {person.contacts?.length ?
-                                        <FamilyPersonHeadingBadge>Контакты и ссылки</FamilyPersonHeadingBadge>
-                                        : ""
-                                    }
-                                    {person.article ?
-                                        <FamilyPersonHeadingBadge>Биография</FamilyPersonHeadingBadge>
-                                        : ""
-                                    }
-                                    {person.photos?.length ?
-                                        <FamilyPersonHeadingBadge>Фотографии</FamilyPersonHeadingBadge>
-                                        : ""
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                        <PersonHeading person={person} />
 
                         <div className="z-20 relative md:ml-80 mx-6 md:mt-10 mt-40 min-h-48 flex flex-col gap-8">
                             <h1 className="text-3xl md:text-5xl text-center md:text-left font-bold">
@@ -147,93 +97,9 @@ export default async function Page({params}: { params: { id: number } }) {
                                 </div>
                             </div>
 
-                            {person.contacts?.length ?
-                                <div className="flex gap-4">
-                                    {person.contacts?.map(contact => {
-                                        return (
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger>
-                                                        <Link key={contact.id} target="_blank" href={contact.value}
-                                                              className="text-3xl text-slate-600 transition-colors hover:text-primary">
-                                                            <FamilyPersonContactIcon type={contact.type} size={40}/>
-                                                        </Link>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent>
-                                                        <p>{new URL(contact.value).host}</p>
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </TooltipProvider>
+                            <PersonLinks person={person} />
 
-                                        )
-                                    })}
-                                </div>
-
-                                : ""
-                            }
-
-
-                            <div>
-                                <h3 className="scroll-m-20 font-semibold tracking-tight">Семья</h3>
-                                {person.parent_couple?.first_person ?
-                                    <div className="flex gap-2">
-                                        Отец:
-                                        <Link className="underline"
-                                              href={`/person/${person.parent_couple.first_person.id}`}>
-                                            {person.parent_couple.first_person.full_name}
-                                        </Link>
-                                    </div>
-                                    : ""
-                                }
-                                {person.parent_couple?.second_person ?
-                                    <div className="flex gap-2">
-                                        Мать:
-                                        <Link href={`/person/${person.parent_couple.second_person.id}`}
-                                              className="underline">
-                                            {person.parent_couple.second_person.full_name}
-                                        </Link>
-                                    </div>
-                                    : ""
-                                }
-                                {person.couples?.map(couple => {
-                                    return (
-                                        <div>
-                                            {couple.second_person && couple.first_person_id === person.id ?
-                                                <div className="flex gap-2">
-                                                    Жена:
-                                                    <Link className="underline"
-                                                          href={`/person/${couple.second_person.id}`}>
-                                                        {couple.second_person.full_name}
-                                                    </Link>
-                                                </div>
-                                                : ""
-                                            }
-
-                                            {couple.first_person && couple.second_person_id === person.id ?
-                                                <div className="flex gap-2">
-                                                    Муж:
-                                                    <Link className="underline"
-                                                          href={`/person/${couple.first_person.id}`}>
-                                                        {couple.first_person.full_name}
-                                                    </Link>
-                                                </div>
-                                                : ""
-                                            }
-
-                                            {couple.children?.length ?
-                                                <div className="pl-4 flex gap-2 flex-wrap">
-                                                    Дети:
-                                                    {couple.children.map<React.ReactNode>(child =>
-                                                        <Link className="underline"
-                                                              href={`/person/${child.id}`}>{child.full_name}</Link>
-                                                    )}
-                                                </div>
-                                                : ""
-                                            }
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                            <PersonRelatives person={person} />
 
                             {person.article ?
                                 <div className="border-t border-slate-200 pt-8">
