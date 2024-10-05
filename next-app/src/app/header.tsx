@@ -16,7 +16,7 @@ export default function Header() {
 
     return (
         <div className="z-30 bg-white shadow-lg">
-            <div className="container mx-auto h-12 flex items-center">
+            <div className="container mx-auto h-12 flex items-center md:justify-center overflow-auto">
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
@@ -35,7 +35,7 @@ export default function Header() {
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href="/list" legacyBehavior passHref>
+                            <Link href="/people" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     Список персон
                                 </NavigationMenuLink>

@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {DatePrecision, Person} from "../types";
+import {DatePrecision, Person} from "@/types";
 
 const formatExactDate = (date: string | number | Date) => {
     return new Intl.DateTimeFormat("ru-RU").format(new Date(date))

@@ -1,6 +1,6 @@
 import {Person} from "@/types";
-import {DataTable} from "@/app/list/data-table";
-import {columns} from "@/app/list/columns";
+import {DataTable} from "@/app/people/data-table";
+import {columns} from "@/app/people/columns";
 
 async function getData(): Promise<Person[]> {
     const peopleResponse = await fetch('https://admin.indenbom.ru/api/v1/family/people');

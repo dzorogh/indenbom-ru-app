@@ -13,9 +13,9 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import {PersonHeading} from "@/app/person/[id]/person-heading";
-import {PersonLinks} from "@/app/person/[id]/person-links";
-import {PersonRelatives} from "@/app/person/[id]/person-relatives";
+import {PersonHeading} from "@/app/people/[id]/person-heading";
+import {PersonLinks} from "@/app/people/[id]/person-links";
+import {PersonRelatives} from "@/app/people/[id]/person-relatives";
 
 type Props = {
     params: { id: string }
