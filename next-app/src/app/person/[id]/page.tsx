@@ -79,7 +79,7 @@ export default async function Page({params}: { params: { id: number } }) {
                     </Breadcrumb>
 
                     <div className="shadow-lg rounded-md overflow-hidden bg-white pb-12">
-                        <PersonHeading person={person} />
+                        <PersonHeading person={person}/>
 
                         <div className="z-20 relative md:ml-80 mx-6 md:mt-10 mt-40 min-h-48 flex flex-col gap-8">
                             <h1 className="text-3xl md:text-5xl text-center md:text-left font-bold">
@@ -101,28 +101,29 @@ export default async function Page({params}: { params: { id: number } }) {
                                 </div>
                             </div>
 
-                            <PersonLinks person={person} />
+                            <PersonLinks person={person}/>
 
-                            <PersonRelatives person={person} />
+                            <PersonRelatives person={person}/>
 
                             {person.article ?
                                 <div className="border-t border-slate-200 pt-8">
                                     <Article content={person.article}/>
                                 </div>
-                                : ""
+                                : <div className="text-muted-foreground">Биографии нет</div>
                             }
                         </div>
                     </div>
 
-                    {person.photos && person.photos.length ?
-                        <div>
-                            <h2 className="scroll-m-20 mb-3 text-xl font-semibold tracking-tight first:mt-0">
+                    <div>
+                        <h2 className="scroll-m-20 mb-3 text-xl font-semibold tracking-tight first:mt-0">
                             Фотографии
-                            </h2>
+                        </h2>
+
+                        {person.photos && person.photos.length ?
                             <FamilyPersonGallery photos={person.photos}/>
-                        </div>
-                        : ""
-                    }
+                            : <div className="text-muted-foreground">Фотографий нет</div>
+                        }
+                    </div>
                 </div>
             </div>
         </>

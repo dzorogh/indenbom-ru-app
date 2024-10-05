@@ -25,7 +25,7 @@ export default function Header() {
 
     return (
         <div className="z-30 bg-white shadow-lg">
-            <div className="container mx-auto px-4 h-12 flex items-center">
+            <div className="container mx-auto h-12 flex items-center">
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>

@@ -40,7 +40,7 @@ export default async function Page() {
                 <Article content={family.description}/>
             </div>
 
-            <div className="bg-white  justify-center md:h-[30svh] relative">
+            <div className="bg-white justify-center md:h-[40svh] relative">
                 <div className="h-full w-full blur-sm">
                     <Tree/>
                 </div>
