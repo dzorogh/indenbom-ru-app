@@ -4,6 +4,13 @@ import FamilyPersonNodeSmall from "./components/family-person-node-small";
 import FamilyRootNode from "./components/family-root-node";
 import {Node} from "@xyflow/react";
 
+export interface Family {
+    id: number,
+    title: string,
+    slug: string,
+    description: string
+}
+
 interface CoupleBase {
     id: number;
     first_person_id: number;
