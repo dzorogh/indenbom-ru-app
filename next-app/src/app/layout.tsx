@@ -22,7 +22,7 @@ export default function RootLayout(
         <body className={`${GeistSans.className}  bg-blue-50/50`}>
         <div className="h-full flex flex-col">
             <Header/>
-            <div className="flex-grow overflow-auto">
+            <div className="flex-grow">
                 {children}
             </div>
             <Footer/>

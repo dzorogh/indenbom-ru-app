@@ -5,13 +5,10 @@ import { AppLink } from "@/components/app-link";
 export default function Footer() {
     return (
         <div className="bg-secondary text-muted-foreground">
-            <div className="container mx-auto px-4 py-1 md:py-4 text-center text-sm md:text-md flex items-center h-12 gap-4 justify-center">
+            <div className="container mx-auto px-4 py-4 text-center text-sm md:text-md flex items-center gap-x-6 gap-y-3 justify-center flex-wrap divide-secondary-foreground">
                 Сергей Инденбом © {new Date().getFullYear()}
-                <Separator orientation="vertical" />
-                Для связи: <AppLink href="mailto:dzorogh@gmail.com">dzorogh@gmail.com</AppLink>
-                <Separator orientation="vertical" />
+                <AppLink href="mailto:dzorogh@gmail.com">dzorogh@gmail.com</AppLink>
                 <AppLink href="https://admin.indenbom.ru/docs/api">API</AppLink>
-                <Separator orientation="vertical" />
                 <AppLink href="https://github.com/dzorogh/indenbom-ru">Github Backend</AppLink>
                 <AppLink href="https://github.com/dzorogh/indenbom-ru-app">Github Frontend</AppLink>
             </div>
