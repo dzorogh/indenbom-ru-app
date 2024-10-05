@@ -47,8 +47,7 @@ export default async function Page() {
                 <Link href="/tree" className="flex items-center justify-center absolute inset-0">
                     <Button variant="default" size="2xl">
                         <>
-                            <Logo className="mr-2 h-4 w-4"/>
-                            Дерево
+                            Интерактивное семейное дерево
                         </>
                     </Button>
                 </Link>

@@ -1,28 +1,17 @@
 'use client'
 
-import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/icons/logo";
 import {
     NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
-import {HomeIcon} from "lucide-react";
-
-
 
 export default function Header() {
-    const pathname = usePathname()
-
     return (
         <div className="z-30 bg-white shadow-lg">
             <div className="container mx-auto h-12 flex items-center">
@@ -39,7 +28,14 @@ export default function Header() {
                         <NavigationMenuItem>
                             <Link href="/tree" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Дерево
+                                    Семейное дерево
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <Link href="/list" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    Список персон
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
