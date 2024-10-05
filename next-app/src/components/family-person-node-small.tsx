@@ -16,7 +16,7 @@ export default memo(function FamilyPersonNodeSmall(props: NodeProps<PersonNode>)
                       className="transition-shadow hover:ring-4 ring-primary rounded-full">
 
                     <div
-                        className="h-full aspect-square rounded-full bg-slate-50 flex items-center justify-center relative">
+                        className="h-full aspect-square rounded-full bg-secondary flex items-center justify-center relative">
                         {props.data.person.avatar_url ? <Image
                                 priority={true}
                                 src={props.data.person.avatar_url}
@@ -37,7 +37,7 @@ export default memo(function FamilyPersonNodeSmall(props: NodeProps<PersonNode>)
                     </div>
 
                     <div>
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-muted-foreground">
                             <FamilyPersonDates person={props.data.person}/>
                         </div>
                     </div>

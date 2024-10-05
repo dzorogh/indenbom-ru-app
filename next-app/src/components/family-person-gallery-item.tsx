@@ -19,7 +19,7 @@ export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
                 <div className="grow">
                     {photo.description ?
                         <Article content={photo.description}/>
-                        : <div className="text-slate-300">Без описания</div>}
+                        : <div className="text-muted-foreground">Без описания</div>}
                 </div>
 
                 {photo.people ?
@@ -32,7 +32,7 @@ export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
                                         {person.full_name}
                                     </AppLink>
                                     {person.position_on_photo ?
-                                        <span className="text-slate-300"> {person.position_on_photo}</span>
+                                        <span className="text-muted-foreground"> {person.position_on_photo}</span>
                                         : ""
                                     }
                                 </div>
@@ -42,11 +42,11 @@ export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
                 }
 
                 <div className="flex justify-between items-center">
-                    <div className="text-slate-400 flex items-center gap-2">
+                    <div className="text-muted-foreground flex items-center gap-2">
                         <Calendar03Icon/> {photo.approximate_date ?? "?"}
                     </div>
 
-                    <div className="text-slate-400 flex items-center gap-2">
+                    <div className="text-muted-foreground flex items-center gap-2">
                         <Location01Icon/> {photo.place ?? "?"}
                     </div>
                 </div>

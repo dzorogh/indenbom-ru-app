@@ -67,6 +67,8 @@ export interface PersonBase {
     parent_couple_id: number | null;
     parent_couple: Couple;
     full_name: string;
+    contacts_count?: number;
+    photos_count?: number;
     contacts:
         {
             id: number,

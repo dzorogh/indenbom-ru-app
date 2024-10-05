@@ -28,7 +28,7 @@ export const PersonHeading = ({person}: {person: Person}) => {
                 />
                 :
                 <div
-                    className="w-[250px] h-[250px] rounded-full bg-slate-50 flex items-center justify-center">
+                    className="w-[250px] h-[250px] rounded-full bg-secondary flex items-center justify-center">
                     <SmileIcon size={50} className="opacity-20"/>
                 </div>
             }

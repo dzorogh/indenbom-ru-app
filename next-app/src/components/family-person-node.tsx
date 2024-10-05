@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FamilyPersonContactIcon from "@/components/family-person-contact-icon";
 import {SmileIcon} from "lucide-react";
+import {Album02Icon, AttachmentCircleIcon, AttachmentSquareIcon} from "hugeicons-react";
 
 export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
 
@@ -25,7 +26,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
                             alt={props.data.person.full_name}
                         />
                         :
-                        <div className="w-[150px] h-[150px] rounded-full bg-slate-50 flex items-center justify-center">
+                        <div className="w-[150px] h-[150px] rounded-full bg-secondary flex items-center justify-center">
                             <SmileIcon className="opacity-20" />
                         </div>
                     }
@@ -40,30 +41,23 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
                             </Link>
                         </div>
 
-                        <div className="nodrag text-2xl flex gap-2">
-                            {props.data.person.contacts?.map(contact => {
-                                return (
-                                    <a key={contact.id} target="_blank" href={contact.value}
-                                       className="text-slate-600 transition-colors hover:text-primary">
-                                        <FamilyPersonContactIcon type={contact.type} size={20}/>
-                                    </a>
-                                )
-                            })}
+                        <div className="flex gap-2 text-muted-foreground">
+                            {props.data.person.photos_count ? <Album02Icon/> : ""}
+                            {props.data.person.contacts_count ? <AttachmentSquareIcon /> : ""}
                         </div>
                     </div>
-
 
                     {props.data.person.birth_date || props.data.person.death_date || props.data.person.place_of_birth ?
                         <div className="flex flex-col gap-1">
                             {props.data.person.place_of_birth ?
-                                <div className="text-sm text-slate-400">
+                                <div className="text-sm text-muted-foreground">
                                     {props.data.person.place_of_birth}
                                 </div>
                                 : ""
                             }
 
                             {props.data.person.birth_date || props.data.person.death_date ?
-                                <div className="text-sm text-slate-400">
+                                <div className="text-sm text-muted-foreground">
                                     <FamilyPersonDates person={props.data.person}/>
                                 </div>
                                 : ""
