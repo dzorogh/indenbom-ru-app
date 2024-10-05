@@ -9,6 +9,9 @@ export default function Footer() {
                 Сергей Инденбом © {new Date().getFullYear()}
                 <Separator orientation="vertical" />
                 <AppLink href="https://admin.indenbom.ru/docs/api">API</AppLink>
+                <Separator orientation="vertical" />
+                <AppLink href="https://github.com/dzorogh/indenbom-ru">Github Backend</AppLink>
+                <AppLink href="https://github.com/dzorogh/indenbom-ru-app">Github Frontend</AppLink>
             </div>
         </div>
     )

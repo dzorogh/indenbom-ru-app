@@ -1,36 +1,13 @@
-# With Docker Compose
+# Project
 
-This example contains everything needed to get a Next.js development and production environment up and running with Docker Compose.
+Website: [indenbom.ru](https://indenbom.ru)
 
-## Benefits of Docker Compose
+API: https://admin.indenbom.ru/docs/api
 
-- Develop locally without Node.js or TypeScript installed ✨
-- Easy to run, consistent development environment across macOS, Windows, and Linux teams
-- Run multiple Next.js apps, databases, and other microservices in a single deployment
-- Multistage builds combined with [Output Standalone](https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files) outputs up to 85% smaller apps (Approximately 110 MB compared to 1 GB with create-next-app)
-- Easy configuration with YAML files
+Frontend: https://github.com/dzorogh/indenbom-ru-app
+Backend: https://github.com/dzorogh/indenbom-ru
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-docker-compose with-docker-compose-app
-```
-
-```bash
-yarn create next-app --example with-docker-compose with-docker-compose-app
-```
-
-```bash
-pnpm create next-app --example with-docker-compose with-docker-compose-app
-```
-
-Optionally, after the installation is complete:
-
-- Run `cd next-app`, then run `npm install` or `yarn install` or `pnpm install` to generate a lockfile.
-
-It is recommended to commit a lockfile to version control. Although the example will work without one, build errors are more likely to occur when using the latest version of all dependencies. This way, we're always using a known good configuration to develop and run in production.
+# Installation and running
 
 ## Prerequisites
 
