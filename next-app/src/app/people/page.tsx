@@ -3,7 +3,8 @@ import {DataTable} from "@/app/people/data-table";
 import {columns} from "@/app/people/columns";
 
 async function getData(): Promise<Person[]> {
-    const peopleResponse = await fetch('https://admin.indenbom.ru/api/v1/family/people');
+    console.log(process.env.API_URL)
+    const peopleResponse = await fetch(process.env.API_URL + '/family/people');
     const peopleData = await peopleResponse.json();
 
     return peopleData.data as Person[]

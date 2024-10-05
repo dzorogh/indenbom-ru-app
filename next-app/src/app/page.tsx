@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function getData() {
-    const familyResponse = await fetch('https://admin.indenbom.ru/api/v1/family/families/' + process.env.FAMILY_SLUG)
+    const familyResponse = await fetch(process.env.API_URL + '/family/families/' + process.env.FAMILY_SLUG)
 
     const familyData = await familyResponse.json();
 

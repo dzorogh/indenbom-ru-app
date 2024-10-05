@@ -43,7 +43,7 @@ export async function generateMetadata(
 
 async function getData(id: string) {
     try {
-        const personResponse = await fetch('https://admin.indenbom.ru/api/v1/family/people/' + id);
+        const personResponse = await fetch(process.env.API_URL + '/family/people/' + id);
 
         if (!personResponse.ok) {
             throw new Error('Failed to fetch data');

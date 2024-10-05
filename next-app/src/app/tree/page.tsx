@@ -12,8 +12,8 @@ export async function generateStaticParams() {
 
 async function getData() {
     const [couplesResponse, peopleResponse] = await Promise.all([
-        await fetch('https://admin.indenbom.ru/api/v1/family/couples'),
-        await fetch('https://admin.indenbom.ru/api/v1/family/people')
+        await fetch(process.env.API_URL + '/family/couples'),
+        await fetch(process.env.API_URL + '/family/people')
     ])
 
     const couplesData = await couplesResponse.json();

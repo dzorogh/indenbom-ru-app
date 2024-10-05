@@ -1,5 +1,6 @@
 services:
   next-app:
+
     container_name: next-app
     build:
       context: ./next-app
@@ -8,6 +9,9 @@ services:
         ENV_VARIABLE: ${ENV_VARIABLE}
         FAMILY_SLUG: ${FAMILY_SLUG}
         NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+        API_URL: ${API_URL}
+    env_file:
+      - .env
     restart: always
     ports:
       - "3002:3000"

@@ -28,9 +28,11 @@ COPY postcss.config.js .
 ARG ENV_VARIABLE
 ENV ENV_VARIABLE=${ENV_VARIABLE}
 ARG NEXT_PUBLIC_ENV_VARIABLE
-ARG FAMILY_SLUG
 ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
+ARG FAMILY_SLUG
 ENV FAMILY_SLUG=${FAMILY_SLUG}
+ARG API_URL
+ENV API_URL=${API_URL}
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
@@ -70,6 +72,8 @@ ENV ENV_VARIABLE=${ENV_VARIABLE}
 ENV FAMILY_SLUG=${FAMILY_SLUG}
 ARG NEXT_PUBLIC_ENV_VARIABLE
 ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
+ARG API_URL
+ENV API_URL=${API_URL}
 
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1
