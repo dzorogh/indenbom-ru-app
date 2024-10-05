@@ -19,6 +19,8 @@ export const Article = ({content}: { content: string }) => {
             format: 'md',
             rehypePlugins: [
                 rehypeExternalLinks,
+            ],
+            remarkPlugins: [
                 remarkGfm
             ]
         }
