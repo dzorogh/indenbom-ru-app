@@ -43,6 +43,7 @@ export enum PersonContactType {
 }
 
 export interface Photo {
+    id: number;
     media_url: string,
     description?: string,
     approximate_date?: string,

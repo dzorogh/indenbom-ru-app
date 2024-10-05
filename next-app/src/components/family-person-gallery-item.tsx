@@ -27,7 +27,7 @@ export const FamilyPersonGalleryItem = ({photo}: { photo: Photo }) => {
                         На фото:
                         <div className="flex flex-col">
                             {photo.people.map(person =>
-                                <div className="text-xs">
+                                <div key={`person-${person.id}`} className="text-xs">
                                     <AppLink href={`/person/${person.id}`}>
                                         {person.full_name}
                                     </AppLink>

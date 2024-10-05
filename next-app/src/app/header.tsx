@@ -12,6 +12,8 @@ import {
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 
 export default function Header() {
+    const path = usePathname();
+
     return (
         <div className="z-30 bg-white shadow-lg">
             <div className="container mx-auto h-12 flex items-center">

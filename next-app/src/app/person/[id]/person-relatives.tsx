@@ -27,12 +27,11 @@ export const PersonRelatives = ({person}: { person: Person }) => {
             }
             {person.couples?.map(couple => {
                 return (
-                    <div>
+                    <div key={`couple-${couple.id}`}>
                         {couple.second_person && couple.first_person_id === person.id ?
                             <div className="flex gap-2">
                                 Жена:
-                                <AppLink className="underline"
-                                         href={`/person/${couple.second_person.id}`}>
+                                <AppLink href={`/person/${couple.second_person.id}`}>
                                     {couple.second_person.full_name}
                                 </AppLink>
                             </div>
@@ -54,7 +53,7 @@ export const PersonRelatives = ({person}: { person: Person }) => {
                             <div className="pl-4 flex gap-2 flex-wrap">
                                 Дети:
                                 {couple.children.map<React.ReactNode>(child =>
-                                    <AppLink href={`/person/${child.id}`}>{child.full_name}</AppLink>
+                                    <AppLink key={`child-${child.id}`} href={`/person/${child.id}`}>{child.full_name}</AppLink>
                                 )}
                             </div>
                             : ""
