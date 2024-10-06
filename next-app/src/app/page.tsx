@@ -22,6 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 }
 
+export const revalidate = 15
+
+
 async function getData() {
     const familyResponse = await fetch(process.env.API_URL + '/family/families/' + process.env.FAMILY_SLUG)
 

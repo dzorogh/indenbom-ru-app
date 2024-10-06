@@ -4,12 +4,6 @@ import {Couple, Family, Person} from "@/types";
 
 export const revalidate = 5
 
-export async function generateStaticParams() {
-    let props = await getData();
-
-    return props.people
-}
-
 async function getData() {
     const [couplesResponse, peopleResponse] = await Promise.all([
         await fetch(process.env.API_URL + '/family/couples'),

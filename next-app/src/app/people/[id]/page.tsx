@@ -55,6 +55,17 @@ async function getData(id: string) {
     }
 }
 
+export const revalidate = 15
+
+export async function generateStaticParams() {
+    const peopleResponse = await fetch(process.env.API_URL + '/family/people/');
+    const people = (await peopleResponse.json())['data'];
+
+    return people.map(({id}) => ({
+        id
+    }))
+}
+
 export default async function Page({params}: { params: { id: number } }) {
     const person = await getData(String(params.id)) as Person;
 
