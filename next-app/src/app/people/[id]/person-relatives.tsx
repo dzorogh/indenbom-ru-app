@@ -8,10 +8,10 @@ export const PersonRelatives = ({person}: { person: Person }) => {
 
 
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             <h3 className="scroll-m-20 font-semibold tracking-tight">Семья</h3>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col lg:flex-row gap-x-2">
                 Отец:
                 {person.parent_couple?.first_person ? <AppLink
                         href={`/people/${person.parent_couple.first_person.id}`}>
@@ -22,7 +22,7 @@ export const PersonRelatives = ({person}: { person: Person }) => {
             </div>
 
 
-            <div className="flex gap-2">
+            <div className="flex flex-col lg:flex-row gap-x-2">
                 Мать:
                 {person.parent_couple?.second_person ?
                     <AppLink href={`/people/${person.parent_couple.second_person.id}`}>
@@ -33,7 +33,7 @@ export const PersonRelatives = ({person}: { person: Person }) => {
             </div>
 
 
-            <div className="flex gap-2">
+            <div className="flex flex-col lg:flex-row gap-x-2">
                 Братья/сестры:
                 { siblings?.length ?
                     siblings.map(sibling => {
@@ -52,7 +52,7 @@ export const PersonRelatives = ({person}: { person: Person }) => {
                 return (
                     <div key={`couple-${couple.id}`}>
                         {couple.second_person && couple.first_person_id === person.id ?
-                            <div className="flex gap-2">
+                            <div className="flex flex-col lg:flex-row gap-x-2">
                                 Жена:
                                 <AppLink href={`/people/${couple.second_person.id}`}>
                                     {couple.second_person.full_name}
@@ -62,7 +62,7 @@ export const PersonRelatives = ({person}: { person: Person }) => {
                         }
 
                         {couple.first_person && couple.second_person_id === person.id ?
-                            <div className="flex gap-2">
+                            <div className="flex flex-col lg:flex-row gap-x-2">
                                 Муж:
                                 <AppLink
                                     href={`/people/${couple.first_person.id}`}>
@@ -73,13 +73,18 @@ export const PersonRelatives = ({person}: { person: Person }) => {
                         }
 
                         {couple.children?.length ?
-                            <div className="flex gap-2 flex-wrap">
+                            <div className="flex">
                                 <ArrowMoveDownRightIcon height={16} />
-                                Дети:
-                                {couple.children.map<React.ReactNode>(child =>
-                                    <AppLink key={`child-${child.id}`}
-                                             href={`/people/${child.id}`}>{child.full_name}</AppLink>
-                                )}
+                                <div className="flex flex-col lg:flex-row gap-x-2">
+                                    Дети:
+
+                                    <div className="flex flex-col lg:flex-row gap-x-2 flex-wrap">
+                                        {couple.children.map<React.ReactNode>(child =>
+                                            <AppLink key={`child-${child.id}`}
+                                                     href={`/people/${child.id}`}>{child.full_name}</AppLink>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                             : ""
                         }
