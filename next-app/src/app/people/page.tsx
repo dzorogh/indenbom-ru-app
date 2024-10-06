@@ -14,7 +14,7 @@ export default async function ListPage() {
     const data = await getData()
 
     return (
-        <div className="container mx-auto py-10 flex">
+        <div className="container justify-center items-center mx-auto py-10 flex">
             <DataTable columns={columns} data={data} />
         </div>
     )
