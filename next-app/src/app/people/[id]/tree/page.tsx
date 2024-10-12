@@ -37,6 +37,26 @@ type Props = {
 //     }
 // }
 
+export async function generateMetadata(
+    {params, searchParams}: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    // read route params
+    const id = params.id
+
+    // fetch data
+    const {people} = await getData(id)
+    const person = people.find(p => p.id === Number(id))
+
+    // optionally access and extend (rather than replace) parent metadata
+    //const previousImages = (await parent).openGraph?.images || []
+
+    return {
+        title: person.full_name + " на семейном дереве - " + (await parent).title.absolute,
+        description: `${person.full_name} — семейное дерево, родители, жены, мужья, дети, братья и сестры`
+    }
+}
+
 async function getData(id: string) {
     const url = joinUrl(process.env.API_URL, '/family/people/tree');
 

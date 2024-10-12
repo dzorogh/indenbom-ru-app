@@ -39,7 +39,7 @@ export async function generateMetadata(
     //const previousImages = (await parent).openGraph?.images || []
 
     return {
-        title: person.full_name + " - " + (await parent).title.absolute,
+        title: `${person.full_name} — биография, годы жизни, родственники, фотографии, контакты, ссылки`,
         description: `${person.full_name} — биография, годы жизни, родственники, фотографии, контакты, ссылки`
     }
 }
