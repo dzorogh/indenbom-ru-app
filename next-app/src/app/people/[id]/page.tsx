@@ -16,6 +16,9 @@ import {
 import {PersonHeading} from "@/app/people/[id]/person-heading";
 import {PersonLinks} from "@/app/people/[id]/person-links";
 import {PersonRelatives} from "@/app/people/[id]/person-relatives";
+import {buttonVariants} from "@/components/ui/button";
+import {Structure03Icon} from "hugeicons-react";
+import Link from "next/link";
 
 type Props = {
     params: { id: string }
@@ -62,7 +65,7 @@ export async function generateStaticParams() {
     const people = (await peopleResponse.json())['data'];
 
     return people.map(({id}) => ({
-        id
+        id: String(id)
     }))
 }
 
@@ -80,7 +83,7 @@ export default async function Page({params}: { params: { id: number } }) {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator/>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/tree">Дерево</BreadcrumbLink>
+                                <BreadcrumbLink href="/people">Список</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator/>
                             <BreadcrumbItem>
@@ -115,6 +118,13 @@ export default async function Page({params}: { params: { id: number } }) {
                             <PersonLinks person={person}/>
 
                             <PersonRelatives person={person}/>
+
+                            <div>
+                                <Link href={`/people/${person.id}/tree`} className={buttonVariants({ variant: "default", size: 'lg' }) + ' gap-2'}>
+                                    <Structure03Icon />
+                                    Семейное дерево
+                                </Link>
+                            </div>
 
                             {person.article ?
                                 <div className="border-t border-slate-200 pt-8">

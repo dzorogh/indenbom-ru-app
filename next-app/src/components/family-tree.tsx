@@ -12,57 +12,106 @@ import '@xyflow/react/dist/style.css';
 import Dagre from '@dagrejs/dagre';
 import {Couple, nodeTypes, NodeTypes, Person} from "@/types";
 
-const personWidth = 450;
+const personWidth = 500;
 const personHeight = 150;
-const personHeightSmall = 75;
+const personHeightSmall = 80;
 
-const getInitialNodes = (couples: Couple[], people: Person[]) : Node[] => {
-    const isSecondPerson = (person: Person) => {
-        return couples.filter(couple => {
-            return couple.second_person_id === person.id
-        }).length > 0
+const isSecondPerson = (personId: number, couples: Couple[], people: Person[], rootPersonId: number) => {
+    const person = people.find(p => p.id === personId);
+
+    if (!person) {
+        return true
     }
 
+    if (person.id === rootPersonId) {
+        return false;
+    }
+
+    const noParents = couples.filter(couple => {
+        return couple.id === person.parent_couple_id
+    }).length === 0;
+
+    const selfCouplesAsHusband = couples.filter(couple => {
+        return couple.wife_id === person.id || couple.husband_id === person.id
+    });
+
+    const rootPerson = people.find(p => p.id === rootPersonId);
+
+    const rootPersonParentCouple = selfCouplesAsHusband.find(c => c.id === rootPerson.parent_couple_id);
+
+    // All without parents, except father of root person
+
+    return noParents && rootPersonParentCouple?.husband_id !== person.id;
+}
+
+const getInitialNodes = (couples: Couple[], people: Person[], rootPersonId: number) : Node[] => {
     return  people.map((person) => {
         return {
             id: 'person-' + person.id,
             data: {
                 person,
-                label: person.full_name
+                label: person.full_name,
+                isRootPerson: person.id === rootPersonId
             },
             width: personWidth,
             position: {x: 0, y: 0},
-            height: isSecondPerson(person) ? personHeightSmall : personHeight,
-            type: isSecondPerson(person) ? NodeTypes.PersonNodeSmall : NodeTypes.PersonNode,
+            height: isSecondPerson(person.id, couples, people, rootPersonId) ? personHeightSmall : personHeight,
+            type: isSecondPerson(person.id, couples, people, rootPersonId) ? NodeTypes.PersonNodeSmall : NodeTypes.PersonNode,
         }
     });
 }
 
-const getInitialEdges = (couples: Couple[], people: Person[]) => {
+const getInitialEdges = (couples: Couple[], people: Person[], rootPersonId: number) => {
     return couples.flatMap(couple => {
         const coupleEdges = [];
 
-        if (couple.second_person_id && couple.first_person_id) {
+        let firstPersonId = null;
+        let secondPersonId = null;
+
+        if (couple.husband_id && !isSecondPerson(couple.husband_id, couples, people, rootPersonId)) {
+            firstPersonId = couple.husband_id;
+            secondPersonId = couple.wife_id;
+        }
+
+        if (couple.wife_id && !isSecondPerson(couple.wife_id, couples, people, rootPersonId)) {
+            firstPersonId = couple.wife_id;
+            secondPersonId = couple.husband_id;
+        }
+
+        if (!firstPersonId) {
+            const rootPerson = people.find(p => p.id === rootPersonId);
+
+            const couplesOfWife = couples.filter(c => c.wife_id === couple.wife_id);
+
+            if (couplesOfWife.filter(c => c.id === rootPerson.parent_couple_id)) {
+                firstPersonId = couple.wife_id;
+                secondPersonId = couple.husband_id;
+            } else {
+                firstPersonId = couple.husband_id;
+                secondPersonId = couple.wife_id;
+            }
+        }
+
+        // Edge between wife and husband
+        if (firstPersonId && secondPersonId) {
             coupleEdges.push({
                 id: `edge-couple-${couple.id}-first`,
-                source: 'person-' + couple.first_person_id,
-                target: 'person-' + couple.second_person_id,
+                source: 'person-' + firstPersonId,
+                target: 'person-' + secondPersonId,
                 type: 'straight',
                 minlen: 1.5
             });
         }
-
 
         const children = people.filter(
             person => person.parent_couple_id === couple.id
         );
 
         children.forEach(child => {
-
-            if (couple.second_person_id) {
+            if (secondPersonId) {
                 coupleEdges.push({
                     id: `edge-couple-${couple.id}-child-${child.id}-second`,
-                    source: 'person-' + couple.second_person_id,
+                    source: 'person-' + secondPersonId,
                     target: 'person-' + child.id,
                     type: 'smoothstep',
                     animated: true,
@@ -71,7 +120,7 @@ const getInitialEdges = (couples: Couple[], people: Person[]) => {
             } else {
                 coupleEdges.push({
                     id: `edge-couple-${couple.id}-child-${child.id}-second`,
-                    source: 'person-' + couple.first_person_id,
+                    source: 'person-' + firstPersonId,
                     target: 'person-' + child.id,
                     type: 'smoothstep',
                     animated: true,
@@ -87,6 +136,7 @@ const getInitialEdges = (couples: Couple[], people: Person[]) => {
 
 const getLayoutedElements = (nodes, edges) => {
     const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+
     g.setGraph({
         rankdir: 'vertical',
         ranker: 'tight-tree'
@@ -118,9 +168,9 @@ const getLayoutedElements = (nodes, edges) => {
     };
 };
 
-const LayoutFlow = ({couples, people}: FamilyTreeProps) => {
-    const [nodes] = useNodesState(getInitialNodes(couples, people));
-    const [edges] = useEdgesState(getInitialEdges(couples, people));
+const LayoutFlow = ({couples, people, rootPersonId}: FamilyTreeProps) => {
+    const [nodes] = useNodesState(getInitialNodes(couples, people, rootPersonId));
+    const [edges] = useEdgesState(getInitialEdges(couples, people, rootPersonId));
 
     const layouted = getLayoutedElements(nodes, edges);
 
@@ -147,13 +197,14 @@ const LayoutFlow = ({couples, people}: FamilyTreeProps) => {
 export interface FamilyTreeProps {
     couples: Couple[];
     people: Person[];
+    rootPersonId: number;
 }
 
-export const FamilyTree = ({couples, people}: FamilyTreeProps) => {
+export const FamilyTree = ({couples, people, rootPersonId}: FamilyTreeProps) => {
 
     return (
         <ReactFlowProvider>
-            <LayoutFlow couples={couples} people={people}/>
+            <LayoutFlow couples={couples} people={people} rootPersonId={rootPersonId}/>
         </ReactFlowProvider>
     );
 }

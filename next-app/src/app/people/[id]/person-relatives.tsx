@@ -13,9 +13,9 @@ export const PersonRelatives = ({person}: { person: Person }) => {
 
             <div className="flex flex-col lg:flex-row gap-x-2">
                 Отец:
-                {person.parent_couple?.first_person ? <AppLink
-                        href={`/people/${person.parent_couple.first_person.id}`}>
-                        {person.parent_couple.first_person.full_name}
+                {person.parent_couple?.husband ? <AppLink
+                        href={`/people/${person.parent_couple.husband.id}`}>
+                        {person.parent_couple.husband.full_name}
                     </AppLink>
                     : <div className="text-muted-foreground">Неизвестно</div>
                 }
@@ -24,9 +24,9 @@ export const PersonRelatives = ({person}: { person: Person }) => {
 
             <div className="flex flex-col lg:flex-row gap-x-2">
                 Мать:
-                {person.parent_couple?.second_person ?
-                    <AppLink href={`/people/${person.parent_couple.second_person.id}`}>
-                        {person.parent_couple.second_person.full_name}
+                {person.parent_couple?.wife ?
+                    <AppLink href={`/people/${person.parent_couple.wife.id}`}>
+                        {person.parent_couple.wife.full_name}
                     </AppLink>
                     : <div className="text-muted-foreground">Неизвестно</div>
                 }
@@ -51,22 +51,22 @@ export const PersonRelatives = ({person}: { person: Person }) => {
             {person.couples?.map(couple => {
                 return (
                     <div key={`couple-${couple.id}`}>
-                        {couple.second_person && couple.first_person_id === person.id ?
+                        {couple.wife && couple.husband_id === person.id ?
                             <div className="flex flex-col lg:flex-row gap-x-2">
                                 Жена:
-                                <AppLink href={`/people/${couple.second_person.id}`}>
-                                    {couple.second_person.full_name}
+                                <AppLink href={`/people/${couple.wife.id}`}>
+                                    {couple.wife.full_name}
                                 </AppLink>
                             </div>
                             : ""
                         }
 
-                        {couple.first_person && couple.second_person_id === person.id ?
+                        {couple.husband && couple.wife_id === person.id ?
                             <div className="flex flex-col lg:flex-row gap-x-2">
                                 Муж:
                                 <AppLink
-                                    href={`/people/${couple.first_person.id}`}>
-                                    {couple.first_person.full_name}
+                                    href={`/people/${couple.husband.id}`}>
+                                    {couple.husband.full_name}
                                 </AppLink>
                             </div>
                             : ""

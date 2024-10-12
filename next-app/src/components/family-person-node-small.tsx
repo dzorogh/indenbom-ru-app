@@ -5,15 +5,17 @@ import {PersonNode} from "../types";
 import Image from "next/image";
 import {SmileIcon} from "lucide-react";
 import Link from "next/link";
+import {buttonVariants} from "@/components/ui/button";
+import {PassportIcon, Structure03Icon} from "hugeicons-react";
 
 export default memo(function FamilyPersonNodeSmall(props: NodeProps<PersonNode>) {
     return (
         <>
             <div
-                className="h-full z-10 flex rounded-full border-zinc-300 border cursor-default">
+                className="h-full z-10 flex gap-4 rounded-r-3xl rounded-l-[150px] border-border border cursor-default">
 
-                <Link href={`/person/${props.data.person.id}`}
-                      className="transition-shadow hover:ring-4 ring-primary rounded-full">
+                <Link href={`/people/${props.data.person.id}/tree`}
+                      className="transition-shadow hover:ring-4 ring-primary rounded-full shrink-0">
 
                     <div
                         className="h-full aspect-square rounded-full bg-secondary flex items-center justify-center relative">
@@ -29,7 +31,7 @@ export default memo(function FamilyPersonNodeSmall(props: NodeProps<PersonNode>)
                     </div>
                 </Link>
 
-                <div className="flex justify-between flex-col px-3 py-2 pr-16">
+                <div className="flex justify-between flex-col px-3 py-2 grow">
                     <div className="text-sm">
                         <Link href={`/person/${props.data.person.id}`} className="hover:underline">
                             {props.data.person.full_name}
@@ -43,6 +45,16 @@ export default memo(function FamilyPersonNodeSmall(props: NodeProps<PersonNode>)
                     </div>
                 </div>
 
+                <div className="flex flex-col gap-1 pt-2 pr-2">
+                    <Link href={`/people/${props.data.person.id}/tree`}
+                          className={buttonVariants({variant: "outline", size: 'xs'})}>
+                        <Structure03Icon size={13}/>
+                    </Link>
+                    <Link href={`/people/${props.data.person.id}`}
+                          className={buttonVariants({variant: "outline", size: 'xs'})}>
+                        <PassportIcon size={13}/>
+                    </Link>
+                </div>
 
             </div>
 

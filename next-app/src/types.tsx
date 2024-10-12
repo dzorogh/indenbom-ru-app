@@ -13,13 +13,13 @@ export interface Family {
 
 interface CoupleBase {
     id: number;
-    first_person_id: number;
-    second_person_id: number;
+    husband_id: number;
+    wife_id: number;
 }
 
 export interface Couple extends CoupleBase {
-    first_person?: Person;
-    second_person?: Person;
+    husband?: Person;
+    wife?: Person;
     children?: Person[];
 }
 
@@ -103,6 +103,7 @@ export interface BaseNodeData extends Record<string, unknown> {
 }
 
 export interface PersonNodeData extends BaseNodeData {
+    isRootPerson: boolean,
     type: TreeNodeType.Person,
     person: Person,
 }

@@ -28,7 +28,7 @@ export default function Header() {
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href="/tree" legacyBehavior passHref>
+                            <Link href="/people/2/tree" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     Семейное дерево
                                 </NavigationMenuLink>

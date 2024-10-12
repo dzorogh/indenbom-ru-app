@@ -4,8 +4,8 @@ import {Article} from "@/components/article";
 import {Metadata, ResolvingMetadata} from "next";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import Logo from "@/components/icons/logo";
-import Tree from "@/app/tree/page"
+import TreeImage from "@/app/tree.png";
+import Image from "next/image";
 
 function truncateString(yourString: string, maxLength: number) {
     // get the index of space after maxLength
@@ -43,15 +43,15 @@ export default async function Page() {
                 <Article content={family.description} />
             </div>
 
-            <div className="bg-white justify-center h-[40svh] relative px-12">
+            <div className="bg-white justify-center h-[40svh] relative">
                 <div className="h-full w-full blur-sm">
-                    <Tree/>
+                    <Image src={TreeImage} fill={true} alt="Background illustraion of tree" className="object-cover" />
                 </div>
 
-                <Link href="/tree" className="flex items-center justify-center absolute inset-0">
+                <Link href="/people/1/tree" className="flex items-center justify-center absolute inset-0">
                     <Button variant="default" size="2xl">
                         <>
-                            Интерактивное семейное дерево
+                            Лев Инденбом
                         </>
                     </Button>
                 </Link>
