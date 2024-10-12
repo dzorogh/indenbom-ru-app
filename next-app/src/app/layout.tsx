@@ -20,7 +20,7 @@ export default function RootLayout(
     }) {
     return (
         <html lang="en">
-        <body className={`${GeistSans.className}  bg-blue-50/50`}>
+        <body className={`${GeistSans.className}  bg-secondary`}>
         <NextTopLoader color="hsl(var(--primary))" />
 
         <div className="h-full flex flex-col">

@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {Handle, NodeProps, Position} from '@xyflow/react';
-import FamilyPersonDates from "./family-person-dates";
-import {PersonNode} from "../types";
+import FamilyPersonDates from "../family-person-dates";
+import {PersonNode} from "../../types";
 import Image from "next/image";
 import {SmileIcon} from "lucide-react";
 import Link from "next/link";

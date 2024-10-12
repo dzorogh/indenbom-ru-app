@@ -1,6 +1,6 @@
 import {Metadata, ResolvingMetadata} from "next";
 import {notFound} from "next/navigation";
-import {FamilyTree} from "@/components/family-tree";
+import {FamilyTree} from "@/components/tree/family-tree";
 import React from "react";
 import {joinUrl} from "@/lib/utils";
 import {Couple, Person} from "@/types";

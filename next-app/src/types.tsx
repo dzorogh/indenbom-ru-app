@@ -1,7 +1,7 @@
-import FamilyCoupleNode from "./components/family-couple-node";
-import FamilyPersonNode from "./components/family-person-node";
-import FamilyPersonNodeSmall from "./components/family-person-node-small";
-import FamilyRootNode from "./components/family-root-node";
+import FamilyCoupleNode from "@/components/tree/family-couple-node"
+import FamilyPersonNode from "@/components/tree/family-person-node";
+import FamilyPersonNodeSmall from "@/components/tree/family-person-node-small";
+import FamilyRootNode from "@/components/tree/family-root-node";
 import {Node} from "@xyflow/react";
 
 export interface Family {
@@ -121,20 +121,13 @@ export interface RootNodeData extends BaseNodeData {
 
 export type NodeData = CoupleNodeData | PersonNodeData | RootNodeData
 
-export enum NodeTypes {
+export enum NodeType {
     CoupleNode = 'coupleNode',
     PersonNode = 'personNode',
     PersonNodeSmall = 'personNodeSmall',
     RootNode = 'rootNode'
 }
 
-export const nodeTypes = {
-    [NodeTypes.CoupleNode]: FamilyCoupleNode,
-    [NodeTypes.PersonNode]: FamilyPersonNode,
-    [NodeTypes.PersonNodeSmall]: FamilyPersonNodeSmall,
-    [NodeTypes.RootNode]: FamilyRootNode,
-}
-
-export type PersonNode = Node<PersonNodeData, NodeTypes.PersonNode>
-export type CoupleNode = Node<CoupleNodeData, NodeTypes.CoupleNode>
+export type PersonNode = Node<PersonNodeData, NodeType.PersonNode>
+export type CoupleNode = Node<CoupleNodeData, NodeType.CoupleNode>
 

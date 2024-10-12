@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {Handle, NodeProps, Position} from '@xyflow/react';
-import FamilyPersonDates from "./family-person-dates";
+import FamilyPersonDates from "@/components/family-person-dates";
 import {PersonNode} from "@/types";
 import Image from "next/image";
 import Link from "next/link";
