@@ -1,32 +1,30 @@
 import React, {memo} from 'react';
 import {Handle, NodeProps, Position} from '@xyflow/react';
 import {CoupleNode} from "@/types";
+import {Add01Icon} from "hugeicons-react";
 
 export default memo(function FamilyCoupleNode(props: NodeProps<CoupleNode>) {
     return (
         <>
-            {props.data.children?.length ? <div className="bg-cyan-600 w-full h-1/2 absolute bottom-0"></div> : null}
+            <div className="flex justify-center h-full w-full">
+                <div className="rounded-full h-full aspect-square  bg-secondary border flex items-center justify-center">
+                    <Add01Icon/>
+                </div>
+            </div>
 
             <Handle
                 type="target"
-                position={Position.Left}
-                id="left"
+                position={Position.Top}
+                id="top"
                 isConnectable={false}
             />
 
             <Handle
-                type="target"
-                position={Position.Right}
-                id="right"
-                isConnectable={false}
-            />
-
-            {props.data.children?.length ? <Handle
                 type="source"
                 position={Position.Bottom}
                 id="bottom"
                 isConnectable={false}
-            /> : null}
+            />
         </>
     );
 });

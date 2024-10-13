@@ -6,7 +6,7 @@ import {
     type EdgeProps,
     type Edge,
 } from '@xyflow/react';
-import {Add02Icon} from "hugeicons-react";
+import {Add01Icon} from "hugeicons-react";
 
 const FamilyCoupleEdge: FC<EdgeProps<Edge<{ label: string }>>> = ({
                                                                 id,
@@ -37,7 +37,7 @@ const FamilyCoupleEdge: FC<EdgeProps<Edge<{ label: string }>>> = ({
                     }}
                     className="z-20 nodrag nopan absolute bg-secondary text-secondary-foreground p-1 rounded"
                 >
-                    <Add02Icon />
+                    <Add01Icon/>
                 </div>
             </EdgeLabelRenderer>
         </>

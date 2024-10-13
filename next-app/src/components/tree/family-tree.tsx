@@ -1,31 +1,45 @@
 "use client"
 
-import React from 'react';
+import React, {useCallback, useLayoutEffect} from 'react';
 import {
     Controls,
     type EdgeTypes,
+    MiniMap,
     type Node,
     type NodeTypes,
-    MiniMap,
     ReactFlow,
     ReactFlowProvider,
     useEdgesState,
-    useNodesState,
+    useNodesState, useReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import Dagre from '@dagrejs/dagre';
 import {Couple, NodeType, Person} from "@/types";
 import FamilyCoupleNode from "@/components/tree/family-couple-node";
 import FamilyPersonNode from "@/components/tree/family-person-node";
 import FamilyPersonNodeSmall from "@/components/tree/family-person-node-small";
 import FamilyRootNode from "@/components/tree/family-root-node";
 import FamilyCoupleEdge from "@/components/tree/family-couple-edge";
+import ELK, {ElkExtendedEdge, ElkNode, LayoutOptions} from 'elkjs/lib/elk.bundled.js';
+
+const elk = new ELK();
+
+// Elk has a *huge* amount of options to configure. To see everything you can
+// tweak check out:
+//
+// - https://www.eclipse.org/elk/reference/algorithms.html
+// - https://www.eclipse.org/elk/reference/options.html
+const elkOptions = {
+    'elk.algorithm': 'layered',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '100',
+    'elk.spacing.nodeNode': '80',
+    'elk.direction': 'DOWN'
+};
 
 const personWidth = 500;
 const personHeight = 150;
 const personHeightSmall = 80;
 
-const isSecondPerson = (personId: number, couples: Couple[], people: Person[], rootPersonId: number) => {
+const isSecondPerson = (personId: number, {couples, people, rootPersonId}: FamilyTreeProps) => {
     const person = people.find(p => p.id === personId);
 
     if (!person) {
@@ -51,78 +65,96 @@ const isSecondPerson = (personId: number, couples: Couple[], people: Person[], r
     return noParents && !isRootCouple;
 }
 
-const getInitialNodes = (couples: Couple[], people: Person[], rootPersonId: number) : Node[] => {
-    return  people.map((person) => {
+const getRootCouple = ({couples, people, rootPersonId}: FamilyTreeProps) => {
+    const rootPerson = people.find(p => p.id === rootPersonId);
+    return couples.find(c => c.id === rootPerson?.parent_couple_id);
+}
+
+const getInitialNodes = (treeProps: FamilyTreeProps): Node[] => {
+    const nodes: Node[] = treeProps.people.map((person) => {
         return {
             id: 'person-' + person.id,
             data: {
                 person,
                 label: person.full_name,
-                isRootPerson: person.id === rootPersonId
+                isRootPerson: person.id === treeProps.rootPersonId
             },
             width: personWidth,
             position: {x: 0, y: 0},
-            height: isSecondPerson(person.id, couples, people, rootPersonId) ? personHeightSmall : personHeight,
-            type: isSecondPerson(person.id, couples, people, rootPersonId) ? NodeType.PersonNodeSmall : NodeType.PersonNode,
+            height: isSecondPerson(person.id, treeProps) ? personHeightSmall : personHeight,
+            type: isSecondPerson(person.id, treeProps) ? NodeType.PersonNodeSmall : NodeType.PersonNode,
         }
     });
+
+    const rootCouple = getRootCouple(treeProps)
+
+    if (rootCouple) {
+        nodes.push({
+            id: 'couple-' + rootCouple.id,
+            data: {
+                couple: rootCouple,
+            },
+            width: personWidth,
+            height: personHeightSmall,
+            position: {x: 0, y: 0},
+            type: NodeType.CoupleNode
+        })
+    }
+
+    return nodes;
 }
 
-const getInitialEdges = (couples: Couple[], people: Person[], rootPersonId: number) => {
-    return couples.flatMap(couple => {
+const getInitialEdges = (treeProps: FamilyTreeProps) => {
+    return treeProps.couples.flatMap(couple => {
         const coupleEdges = [];
 
-        const children = people.filter(
+        const children = treeProps.people.filter(
             person => person.parent_couple_id === couple.id
         );
 
-        // if (!isSecondPerson(couple.husband_id, couples, people, rootPersonId) && !isSecondPerson(couple.wife_id, couples, people, rootPersonId)) {
-        //     console.log('root parent couple')
-        //     // both - first persons == parent of rootPerson
-        //
-        //     children.forEach(child => {
-        //         if (couple.husband_id) {
-        //             coupleEdges.push({
-        //                 id: `edge-couple-${couple.id}-child-${child.id}-first`,
-        //                 source: 'person-' + couple.husband_id,
-        //                 target: 'person-' + child.id,
-        //                 minlen: 4,
-        //                 selectable: false,
-        //             });
-        //         }
-        //
-        //         if (couple.wife_id) {
-        //             coupleEdges.push({
-        //                 id: `edge-couple-${couple.id}-child-${child.id}-second`,
-        //                 source: 'person-' + couple.wife_id,
-        //                 target: 'person-' + child.id,
-        //                 minlen: 4,
-        //                 selectable: false,
-        //             });
-        //         }
-        //     });
-        // } else {
+        const rootCouple = getRootCouple(treeProps);
+
+        if (couple.id === rootCouple?.id) {
+            coupleEdges.push({
+                id: `edge-couple-${couple.id}-husband`,
+                source: 'person-' + couple.husband_id,
+                target: 'couple-' + couple.id,
+                selectable: false,
+            });
+
+            coupleEdges.push({
+                id: `edge-couple-${couple.id}-wife`,
+                source: 'person-' + couple.wife_id,
+                target: 'couple-' + couple.id,
+                selectable: false,
+            });
+
+            children.forEach(child => {
+                coupleEdges.push({
+                    id: `edge-couple-${couple.id}-child-${child.id}`,
+                    source: 'couple-' + couple.id,
+                    target: 'person-' + child.id,
+                    selectable: false,
+                });
+            });
+        } else {
             let firstPersonId = null;
             let secondPersonId = null;
 
-            if (couple.husband_id && !isSecondPerson(couple.husband_id, couples, people, rootPersonId)) {
+            if (couple.husband_id && !isSecondPerson(couple.husband_id, treeProps)) {
                 firstPersonId = couple.husband_id;
                 secondPersonId = couple.wife_id;
             }
 
-            if (couple.wife_id && !isSecondPerson(couple.wife_id, couples, people, rootPersonId)) {
+            if (couple.wife_id && !isSecondPerson(couple.wife_id, treeProps)) {
                 firstPersonId = couple.wife_id;
                 secondPersonId = couple.husband_id;
             }
 
-            if (couple.id === 3) {
-                console.log(firstPersonId, secondPersonId)
-            }
-
             if (!firstPersonId) {
-                const rootPerson = people.find(p => p.id === rootPersonId);
+                const rootPerson = treeProps.people.find(p => p.id === treeProps.rootPersonId);
 
-                const couplesOfWife = couples.filter(c => c.wife_id === couple.wife_id);
+                const couplesOfWife = treeProps.couples.filter(c => c.wife_id === couple.wife_id);
 
                 if (couplesOfWife.filter(c => c.id === rootPerson.parent_couple_id)) {
                     firstPersonId = couple.wife_id;
@@ -139,7 +171,6 @@ const getInitialEdges = (couples: Couple[], people: Person[], rootPersonId: numb
                     id: `edge-couple-${couple.id}-first`,
                     source: 'person-' + firstPersonId,
                     target: 'person-' + secondPersonId,
-                    minlen: 1.5,
                     type: 'couple',
                     selectable: false,
                 });
@@ -151,7 +182,6 @@ const getInitialEdges = (couples: Couple[], people: Person[], rootPersonId: numb
                         id: `edge-couple-${couple.id}-child-${child.id}-second`,
                         source: 'person-' + secondPersonId,
                         target: 'person-' + child.id,
-                        minlen: 5,
                         selectable: false,
                     });
                 } else {
@@ -159,54 +189,44 @@ const getInitialEdges = (couples: Couple[], people: Person[], rootPersonId: numb
                         id: `edge-couple-${couple.id}-child-${child.id}-first`,
                         source: 'person-' + firstPersonId,
                         target: 'person-' + child.id,
-                        minlen: 5,
                         selectable: false,
                     });
                 }
 
             });
-        // }
-
-
+        }
 
         return coupleEdges;
     });
 }
 
-const getLayoutedElements = (nodes, edges) => {
-    const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
-    g.setGraph({
-        rankdir: 'vertical',
-        ranker: 'tight-tree',
-        edgesep: 50,
-        ranksep: 50,
-    });
-
-    edges.forEach((edge) => g.setEdge(edge.source, edge.target, {weight: edge.weight, minlen: edge.minlen}));
-
-    nodes.forEach((node) =>
-        g.setNode(node.id, {
+const getLayoutedElements = (nodes: ElkNode[], edges: ElkExtendedEdge[], options: LayoutOptions) => {
+    const graph: ElkNode = {
+        id: 'root',
+        layoutOptions: options,
+        children: nodes.map((node) => ({
             ...node,
-            width: node.width ?? 0,
-            height: node.height ?? 0,
-        }),
-    );
-
-    Dagre.layout(g);
-
-    return {
-        nodes: nodes.map((node) => {
-            const position = g.node(node.id);
-            // We are shifting the dagre node position (anchor=center center) to the top left
-            // so it matches the React Flow node anchor point (top left).
-            const x = position.x - (node.measured?.width ?? 0) / 2;
-            const y = position.y - (node.measured?.height ?? 0) / 2;
-
-            return {...node, position: {x, y}};
-        }),
-        edges,
+            // Adjust the target and source handle positions based on the layout
+            // direction.
+            targetPosition: 'top',
+            sourcePosition: 'bottom',
+        })),
+        edges: edges,
     };
+
+    return elk
+        .layout(graph)
+        .then((layoutedGraph) => ({
+            nodes: layoutedGraph.children.map((node) => ({
+                ...node,
+                // React Flow expects a position property on the node instead of `x`
+                // and `y` fields.
+                position: {x: node.x, y: node.y},
+            })) as ElkNode[],
+
+            edges: layoutedGraph.edges as ElkExtendedEdge[],
+        }))
+        .catch(console.error);
 };
 
 const nodeTypes: NodeTypes = {
@@ -220,25 +240,47 @@ const edgeTypes: EdgeTypes = {
     couple: FamilyCoupleEdge
 }
 
-const LayoutFlow = ({couples, people, rootPersonId}: FamilyTreeProps) => {
-    const [nodes] = useNodesState(getInitialNodes(couples, people, rootPersonId));
-    const [edges] = useEdgesState(getInitialEdges(couples, people, rootPersonId));
+const LayoutFlow = (treeProps: FamilyTreeProps) => {
+    const {fitView} = useReactFlow();
 
-    const layouted = getLayoutedElements(nodes, edges);
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+    const initialNodes = getInitialNodes(treeProps);
+    const initialEdges = getInitialEdges(treeProps);
+
+    const onLayout = useCallback(({useInitialNodes = false}) => {
+            const ns = useInitialNodes ? initialNodes : nodes;
+            const es = useInitialNodes ? initialEdges : edges;
+
+            getLayoutedElements(ns, es, elkOptions).then(
+                (data) => {
+                    if (data) {
+                        setNodes(data.nodes);
+                        setEdges(data.edges);
+                    }
+                },
+            );
+        }, [edges, initialEdges, initialNodes, nodes, setEdges, setNodes]
+    );
+
+    useLayoutEffect(() => {
+        onLayout({useInitialNodes: true});
+    }, [onLayout]);
 
 
     const nodeClassName = (node) => node.type;
 
     return (
         <ReactFlow
-            nodes={layouted.nodes}
-            edges={layouted.edges}
+            nodes={nodes}
+            edges={edges}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             nodesConnectable={false}
             nodesDraggable={false}
-            fitView
             minZoom={0.1}
+            fitView={true}
         >
             <MiniMap zoomable pannable nodeClassName={nodeClassName}/>
 
