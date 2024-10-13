@@ -46,7 +46,7 @@ export async function generateMetadata(
 
 async function getData(id: string) {
     try {
-        const personResponse = await fetch(process.env.API_URL + '/family/people/' + id);
+        const personResponse = await fetch(process.env.NEXT_PUBLIC_API_URL + '/family/people/' + id);
 
         if (!personResponse.ok) {
             throw new Error('Failed to fetch data');
@@ -61,12 +61,8 @@ async function getData(id: string) {
 export const revalidate = 15
 
 export async function generateStaticParams() {
-    const peopleResponse = await fetch(process.env.API_URL + '/family/people/');
-    const people = (await peopleResponse.json())['data'];
-
-    return people.map(({id}) => ({
-        id: String(id)
-    }))
+    const peopleResponse = await fetch(process.env.NEXT_PUBLIC_API_URL + '/family/people/ids');
+    return (await peopleResponse.json())['data'].map(id => ({id: String(id)}));
 }
 
 export default async function Page({params}: { params: { id: number } }) {

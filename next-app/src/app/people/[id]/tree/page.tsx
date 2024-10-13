@@ -58,9 +58,7 @@ export async function generateMetadata(
 }
 
 async function getData(id: string) {
-    const url = joinUrl(process.env.API_URL, '/family/people/tree');
-
-    url.searchParams.set('root_person_id', id);
+    const url = joinUrl(process.env.NEXT_PUBLIC_API_URL, `/family/people/${id}/tree`);
 
     const treeResponse = await fetch(url);
 
@@ -75,12 +73,8 @@ async function getData(id: string) {
 export const revalidate = 15
 
 export async function generateStaticParams() {
-    const peopleResponse = await fetch(process.env.API_URL + '/family/people/');
-    const people = (await peopleResponse.json())['data'];
-
-    return people.map(({id}) => ({
-        id: String(id)
-    }))
+    const peopleResponse = await fetch(process.env.NEXT_PUBLIC_API_URL + '/family/people/ids');
+    return (await peopleResponse.json())['data'].map(id => ({id: String(id)}));
 }
 
 export default async function Page({params}: Props) {

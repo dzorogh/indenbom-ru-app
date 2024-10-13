@@ -9,7 +9,7 @@ export function joinUrl(...parts: string[]) {
   const segments = [];
 
   parts.forEach(part => {
-    segments.push(...part.split('/'))
+    segments.push(...String(part).split('/'))
   })
 
   return new URL(segments.filter(s => s.length).join('/'));
