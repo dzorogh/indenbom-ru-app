@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import Logo from "@/components/icons/logo";
 import {
     NavigationMenu,
@@ -9,7 +9,8 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
+import {navigationMenuTriggerStyle} from "@/components/ui/navigation-menu"
+import {Separator} from "@/components/ui/separator";
 
 export default function Header() {
     const path = usePathname();
@@ -22,25 +23,36 @@ export default function Header() {
                         <NavigationMenuItem>
                             <Link href="/" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    <Logo className="mr-2 h-6 w-6" />
+                                    <Logo className="mr-2 h-6 w-6"/>
                                     INDENBOM
-                                </NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <Link href="/people/2/tree" legacyBehavior passHref>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Семейное дерево
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
                             <Link href="/people" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Список персон
+                                    Все люди
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
+                        <NavigationMenuItem className='self-stretch'>
+                            <Separator orientation="vertical"/>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <Link href="/people/1/tree" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    Л. А. Инденбом
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <Link href="/people/31/tree" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    С. С. Яровой
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+
                     </NavigationMenuList>
                 </NavigationMenu>
             </div>

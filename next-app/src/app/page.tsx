@@ -2,10 +2,11 @@ import React from 'react';
 import {Family} from "@/types";
 import {Article} from "@/components/article";
 import {Metadata, ResolvingMetadata} from "next";
-import {Button} from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import Link from "next/link";
 import TreeImage from "@/app/tree.png";
 import Image from "next/image";
+import {Structure03Icon} from "hugeicons-react";
 
 function truncateString(yourString: string, maxLength: number) {
     // get the index of space after maxLength
@@ -48,13 +49,14 @@ export default async function Page() {
                     <Image src={TreeImage} fill={true} alt="Background illustraion of tree" className="object-cover" />
                 </div>
 
-                <Link href="/people/1/tree" className="flex items-center justify-center absolute inset-0">
-                    <Button variant="default" size="2xl">
-                        <>
-                            Лев Инденбом
-                        </>
-                    </Button>
-                </Link>
+                <div className="absolute inset-0 flex items-center justify-center gap-2 ">
+                    <Link href="/people/1/tree" className={buttonVariants({ variant: "default", size: '2xl' }) + ' gap-2'}>
+                        Лев Инденбом
+                    </Link>
+                    <Link href="/people/1/tree" className={buttonVariants({ variant: "default", size: '2xl' }) + ' gap-2'}>
+                        Станислав Яровой
+                    </Link>
+                </div>
             </div>
         </>
     );
