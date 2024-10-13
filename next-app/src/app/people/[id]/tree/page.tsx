@@ -89,8 +89,8 @@ export default async function Page({params}: Props) {
     const rootPerson = people.find(p => p.id === Number(params.id))
 
     return (
-        <>
-            <div className="p-2 px-4">
+        <div className="flex flex-col h-full">
+            <div className="p-2 px-4 shrink-0">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -111,7 +111,9 @@ export default async function Page({params}: Props) {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
-            <FamilyTree couples={couples} people={people} rootPersonId={Number(params.id)}/>
-        </>
+            <div className="grow">
+                <FamilyTree couples={couples} people={people} rootPersonId={Number(params.id)}/>
+            </div>
+        </div>
     )
 }

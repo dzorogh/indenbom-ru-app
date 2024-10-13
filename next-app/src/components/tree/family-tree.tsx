@@ -7,10 +7,12 @@ import {
     MiniMap,
     type Node,
     type NodeTypes,
+    useViewport,
     ReactFlow,
     ReactFlowProvider,
     useEdgesState,
-    useNodesState, useReactFlow,
+    useNodesState,
+    useReactFlow, Panel,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import {Couple, NodeType, Person} from "@/types";
@@ -20,6 +22,8 @@ import FamilyPersonNodeSmall from "@/components/tree/family-person-node-small";
 import FamilyRootNode from "@/components/tree/family-root-node";
 import FamilyCoupleEdge from "@/components/tree/family-couple-edge";
 import ELK, {ElkExtendedEdge, ElkNode, LayoutOptions} from 'elkjs/lib/elk.bundled.js';
+import {Button} from "@/components/ui/button";
+import {CenterFocusIcon} from "hugeicons-react";
 
 const elk = new ELK();
 
@@ -32,7 +36,8 @@ const elkOptions = {
     'elk.algorithm': 'layered',
     'elk.layered.spacing.nodeNodeBetweenLayers': '100',
     'elk.spacing.nodeNode': '80',
-    'elk.direction': 'DOWN'
+    'elk.direction': 'DOWN',
+    'elk.margins': '200',
 };
 
 const personWidth = 500;
@@ -246,7 +251,7 @@ const edgeTypes: EdgeTypes = {
 }
 
 const LayoutFlow = (treeProps: FamilyTreeProps) => {
-    const {fitView} = useReactFlow();
+    const {fitView, getViewport, setViewport, getNode} = useReactFlow();
 
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -273,6 +278,18 @@ const LayoutFlow = (treeProps: FamilyTreeProps) => {
         onLayout({useInitialNodes: true});
     }, []);
 
+    const focusOnRootPerson = (duration: number) => {
+        const n = getNode('person-' + treeProps.rootPersonId)
+        fitView({nodes: [n], duration, maxZoom: 0.7});
+    }
+
+    const focusOnRootPersonFast = useCallback(() => {
+        focusOnRootPerson(0)
+    }, [setViewport, getNode]);
+
+    const focusOnRootPersonSlow = useCallback(() => {
+        focusOnRootPerson(300)
+    }, [setViewport, getNode]);
 
     const nodeClassName = (node) => node.type;
 
@@ -285,11 +302,14 @@ const LayoutFlow = (treeProps: FamilyTreeProps) => {
             nodesConnectable={false}
             nodesDraggable={false}
             minZoom={0.1}
-            fitView={true}
+            fitView
+            onNodesChange={focusOnRootPersonFast}
         >
-            <MiniMap zoomable pannable nodeClassName={nodeClassName}/>
-
             <Controls showInteractive={false}/>
+
+            <Panel position="top-right">
+                <Button variant="outline" onClick={focusOnRootPersonSlow}><CenterFocusIcon/></Button>
+            </Panel>
         </ReactFlow>
     );
 };

@@ -4,8 +4,7 @@ import FamilyPersonDates from "@/components/family-person-dates";
 import {PersonNode} from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import {SmileIcon} from "lucide-react";
-import {Album02Icon, AttachmentSquareIcon, PassportIcon, Structure03Icon} from "hugeicons-react";
+import {Album02Icon, AttachmentSquareIcon, PassportIcon, Structure03Icon, SmileIcon} from "hugeicons-react";
 import {buttonVariants} from "@/components/ui/button";
 
 export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
