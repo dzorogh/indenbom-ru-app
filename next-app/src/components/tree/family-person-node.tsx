@@ -4,10 +4,9 @@ import FamilyPersonDates from "@/components/family-person-dates";
 import {PersonNode} from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import FamilyPersonContactIcon from "@/components/family-person-contact-icon";
 import {SmileIcon} from "lucide-react";
-import {Album02Icon, AttachmentCircleIcon, AttachmentSquareIcon, PassportIcon, Structure03Icon} from "hugeicons-react";
-import {Button, buttonVariants} from "@/components/ui/button";
+import {Album02Icon, AttachmentSquareIcon, PassportIcon, Structure03Icon} from "hugeicons-react";
+import {buttonVariants} from "@/components/ui/button";
 
 export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
 
@@ -16,7 +15,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
             <div
                 className={`h-full bg-white z-10 rounded-r-3xl rounded-l-[150px] shadow-lg shadow-slate-200 flex cursor-default gap-4 ${props.data.isRootPerson ? 'ring-primary ring' : ''}`}>
 
-                <Link href={`/people/${props.data.person.id}/tree`} className="transition-shadow hover:ring-4 ring-primary rounded-full shrink-0 h-full aspect-square relative">
+                <Link href={`/people/${props.data.person.id}/tree`} className={`transition-shadow ${!props.data.isRootPerson ? 'hover:ring-4' : ''}  ring-primary rounded-full shrink-0 h-full aspect-square relative`}>
                     {props.data.person.avatar_url ?
                         <Image
                             priority={true}
