@@ -6,10 +6,10 @@ import {ArrowDownRight01Icon, ArrowMoveDownRightIcon} from "hugeicons-react";
 export const PersonRelatives = ({person}: { person: Person }) => {
     const fatherSiblings = person.parent_couple?.husband?.couples?.flatMap(couples => {
         return couples.children;
-    });
+    }) ?? [];
     const motherSiblings = person.parent_couple?.wife?.couples?.flatMap(couples => {
         return couples.children;
-    })
+    }) ?? [];
 
     const siblings = [...new Map([...fatherSiblings, ...motherSiblings].map(sibling => [sibling.id, sibling])).values()]
         .filter(sibling => sibling.id !== person.id);
