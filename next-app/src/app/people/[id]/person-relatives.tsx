@@ -4,8 +4,15 @@ import {AppLink} from "@/components/app-link";
 import {ArrowDownRight01Icon, ArrowMoveDownRightIcon} from "hugeicons-react";
 
 export const PersonRelatives = ({person}: { person: Person }) => {
-    const siblings = person.parent_couple?.children?.filter(sibling => sibling.id !== person.id);
+    const fatherSiblings = person.parent_couple?.husband?.couples?.flatMap(couples => {
+        return couples.children;
+    });
+    const motherSiblings = person.parent_couple?.wife?.couples?.flatMap(couples => {
+        return couples.children;
+    })
 
+    const siblings = [...new Map([...fatherSiblings, ...motherSiblings].map(sibling => [sibling.id, sibling])).values()]
+        .filter(sibling => sibling.id !== person.id);
 
     return (
         <div className="flex flex-col gap-2">
@@ -33,7 +40,7 @@ export const PersonRelatives = ({person}: { person: Person }) => {
             </div>
 
 
-            <div className="flex flex-col lg:flex-row gap-x-2">
+            <div className="flex flex-col lg:flex-wrap lg:flex-row gap-x-2">
                 Братья/сестры:
                 { siblings?.length ?
                     siblings.map(sibling => {
