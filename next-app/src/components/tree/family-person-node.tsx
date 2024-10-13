@@ -16,7 +16,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
             <div
                 className={`h-full bg-white z-10 rounded-r-3xl rounded-l-[150px] shadow-lg shadow-slate-200 flex cursor-default gap-4 ${props.data.isRootPerson ? 'ring-primary ring' : ''}`}>
 
-                <div className="ring-primary rounded-full shrink-0 h-full aspect-square relative">
+                <Link href={`/people/${props.data.person.id}/tree`} className="transition-shadow hover:ring-4 ring-primary rounded-full shrink-0 h-full aspect-square relative">
                     {props.data.person.avatar_url ?
                         <Image
                             priority={true}
@@ -30,7 +30,7 @@ export default memo(function FamilyPersonNode(props: NodeProps<PersonNode>) {
                             <SmileIcon className="opacity-20" />
                         </div>
                     }
-                </div>
+                </Link>
 
 
                 <div className="flex py-4 justify-between flex-col grow">

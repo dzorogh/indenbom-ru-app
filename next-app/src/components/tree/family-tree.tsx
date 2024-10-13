@@ -97,7 +97,8 @@ const getInitialNodes = (treeProps: FamilyTreeProps): Node[] => {
             width: personWidth,
             height: personHeightSmall,
             position: {x: 0, y: 0},
-            type: NodeType.CoupleNode
+            type: NodeType.CoupleNode,
+            selectable: false,
         })
     }
 
@@ -115,19 +116,23 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
         const rootCouple = getRootCouple(treeProps);
 
         if (couple.id === rootCouple?.id) {
-            coupleEdges.push({
-                id: `edge-couple-${couple.id}-husband`,
-                source: 'person-' + couple.husband_id,
-                target: 'couple-' + couple.id,
-                selectable: false,
-            });
+            if (couple.husband_id) {
+                coupleEdges.push({
+                    id: `edge-couple-${couple.id}-husband`,
+                    source: 'person-' + couple.husband_id,
+                    target: 'couple-' + couple.id,
+                    selectable: false,
+                });
+            }
 
-            coupleEdges.push({
-                id: `edge-couple-${couple.id}-wife`,
-                source: 'person-' + couple.wife_id,
-                target: 'couple-' + couple.id,
-                selectable: false,
-            });
+            if (couple.wife_id) {
+                coupleEdges.push({
+                    id: `edge-couple-${couple.id}-wife`,
+                    source: 'person-' + couple.wife_id,
+                    target: 'couple-' + couple.id,
+                    selectable: false,
+                });
+            }
 
             children.forEach(child => {
                 coupleEdges.push({
@@ -261,12 +266,12 @@ const LayoutFlow = (treeProps: FamilyTreeProps) => {
                     }
                 },
             );
-        }, [edges, initialEdges, initialNodes, nodes, setEdges, setNodes]
+        }, [edges, nodes]
     );
 
     useLayoutEffect(() => {
         onLayout({useInitialNodes: true});
-    }, [onLayout]);
+    }, []);
 
 
     const nodeClassName = (node) => node.type;
