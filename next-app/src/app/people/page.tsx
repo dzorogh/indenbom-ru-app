@@ -1,6 +1,8 @@
 import {Person} from "@/types";
 import {DataTable} from "@/app/people/data-table";
 import {columns} from "@/app/people/columns";
+import {PageTitle} from "@/components/page-title";
+import React from "react";
 
 // export const revalidate = 5
 //
@@ -15,7 +17,8 @@ export default async function ListPage() {
     // const data = await getData()
 
     return (
-        <div className="container justify-center items-center mx-auto py-10 flex">
+        <div className="container mx-auto px-4 justify-center items-center py-10 overflow-hidden">
+            <PageTitle>Список людей</PageTitle>
             <DataTable columns={columns} />
         </div>
     )

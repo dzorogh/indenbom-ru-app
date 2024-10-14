@@ -7,6 +7,7 @@ import Link from "next/link";
 import TreeImage from "@/app/tree.png";
 import Image from "next/image";
 import {Structure03Icon} from "hugeicons-react";
+import {PageTitle} from "@/components/page-title";
 
 function truncateString(yourString: string, maxLength: number) {
     // get the index of space after maxLength
@@ -40,7 +41,7 @@ export default async function Page() {
     return (
         <>
             <div className="container mx-auto px-4 py-6 lg:py-12 flex items-center flex-col">
-                <h1 className="text-3xl md:text-5xl font-bold mb-6">История фамилии Инденбом</h1>
+                <PageTitle>История фамилии Инденбом</PageTitle>
                 <Article content={family.description} />
             </div>
 
