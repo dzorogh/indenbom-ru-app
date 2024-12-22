@@ -1,5 +1,5 @@
 services:
-  next-app:
+  indenbom-ru-app:
     container_name: next-app
     build:
       context: ./next-app

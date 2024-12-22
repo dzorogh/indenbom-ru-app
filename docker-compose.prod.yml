@@ -1,5 +1,5 @@
 services:
-  next-app:
+  indenbom-ru-app:
 
     container_name: next-app
     build:
@@ -15,3 +15,10 @@ services:
     restart: always
     ports:
       - "3002:3000"
+    networks:
+      - npm
+
+networks:
+  npm:
+    external: true
+    name: npm
