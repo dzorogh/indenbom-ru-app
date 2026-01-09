@@ -81,7 +81,7 @@ const coupleNode = (couple: Couple): Node => {
         data: {
             couple,
         },
-        width: personWidth,
+        width: personHeightSmall,
         height: personHeightSmall,
         position: { x: 0, y: 0 },
         type: NodeType.CoupleNode,
@@ -111,11 +111,9 @@ const getInitialNodes = (treeProps: FamilyTreeProps): Node[] => {
         return personNode(person, person.id === treeProps.rootPersonId, isSecondPerson(person.id, treeProps));
     });
 
-    const rootCouple = getRootCouple(treeProps)
-
-    if (rootCouple) {
-        nodes.push(coupleNode(rootCouple));
-    }
+    treeProps.couples.forEach(couple => {
+        nodes.push(coupleNode(couple));
+    });
 
     return nodes;
 }
@@ -136,6 +134,7 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 target: 'couple-' + couple.id,
                 type: 'couple',
                 selectable: false,
+                targetHandle: 'left'
             });
         }
 
@@ -147,6 +146,7 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 target: 'couple-' + couple.id,
                 type: 'couple',
                 selectable: false,
+                targetHandle: 'right'
             });
         }
 
