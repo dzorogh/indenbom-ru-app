@@ -102,7 +102,6 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 id: `edge-couple-${couple.id}-husband`,
                 source: 'person-' + couple.husband_id,
                 target: 'couple-' + couple.id,
-                type: 'couple',
                 selectable: false,
                 targetHandle: 'top'
             });
@@ -114,7 +113,6 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 id: `edge-couple-${couple.id}-wife`,
                 source: 'person-' + couple.wife_id,
                 target: 'couple-' + couple.id,
-                type: 'couple',
                 selectable: false,
                 targetHandle: 'top'
             });
@@ -134,7 +132,7 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
     });
 }
 
-const getLayoutedElements = (nodes: ElkNode[], edges: ElkExtendedEdge[], options: LayoutOptions) => {
+const getLayoutedElements = (nodes: ElkNode[], edges: ElkExtendedEdge[], options: LayoutOptions, couples: Couple[]) => {
     const graph: ElkNode = {
         id: 'root',
         layoutOptions: options,
@@ -150,16 +148,49 @@ const getLayoutedElements = (nodes: ElkNode[], edges: ElkExtendedEdge[], options
 
     return elk
         .layout(graph)
-        .then((layoutedGraph) => ({
-            nodes: layoutedGraph.children.map((node) => ({
+        .then((layoutedGraph) => {
+            // Центрируем ноды пар между мужем и женой перед преобразованием в React Flow формат
+            couples.forEach(couple => {
+                const coupleNode = layoutedGraph.children.find(n => n.id === 'couple-' + couple.id);
+                if (!coupleNode) return;
+
+                const husbandNode = couple.husband_id ? layoutedGraph.children.find(n => n.id === 'person-' + couple.husband_id) : null;
+                const wifeNode = couple.wife_id ? layoutedGraph.children.find(n => n.id === 'person-' + couple.wife_id) : null;
+
+                if (husbandNode && wifeNode) {
+                    // Вычисляем центр между мужем и женой
+                    const husbandCenterX = (husbandNode.x || 0) + (husbandNode.width || personWidth) / 2;
+                    const wifeCenterX = (wifeNode.x || 0) + (wifeNode.width || personWidth) / 2;
+                    const centerX = (husbandCenterX + wifeCenterX) / 2;
+                    
+                    // Устанавливаем позицию ноды пары так, чтобы она была по центру
+                    const coupleWidth = coupleNode.width || personHeightSmall;
+                    coupleNode.x = centerX - coupleWidth / 2;
+                } else if (husbandNode) {
+                    // Если есть только муж, центрируем относительно него
+                    const husbandCenterX = (husbandNode.x || 0) + (husbandNode.width || personWidth) / 2;
+                    const coupleWidth = coupleNode.width || personHeightSmall;
+                    coupleNode.x = husbandCenterX - coupleWidth / 2;
+                } else if (wifeNode) {
+                    // Если есть только жена, центрируем относительно неё
+                    const wifeCenterX = (wifeNode.x || 0) + (wifeNode.width || personWidth) / 2;
+                    const coupleWidth = coupleNode.width || personHeightSmall;
+                    coupleNode.x = wifeCenterX - coupleWidth / 2;
+                }
+            });
+
+            const layoutedNodes = layoutedGraph.children.map((node) => ({
                 ...node,
                 // React Flow expects a position property on the node instead of `x`
                 // and `y` fields.
                 position: { x: node.x, y: node.y },
-            })) as ElkNode[],
+            })) as ElkNode[];
 
-            edges: layoutedGraph.edges as ElkExtendedEdge[],
-        }))
+            return {
+                nodes: layoutedNodes,
+                edges: layoutedGraph.edges as ElkExtendedEdge[],
+            };
+        })
         .catch(console.error);
 };
 
@@ -187,7 +218,7 @@ const LayoutFlow = (treeProps: FamilyTreeProps) => {
         const ns = useInitialNodes ? initialNodes : nodes;
         const es = useInitialNodes ? initialEdges : edges;
 
-        getLayoutedElements(ns, es, elkOptions).then(
+        getLayoutedElements(ns, es, elkOptions, treeProps.couples).then(
             (data) => {
                 if (data) {
                     setNodes(data.nodes);
@@ -195,7 +226,7 @@ const LayoutFlow = (treeProps: FamilyTreeProps) => {
                 }
             },
         );
-    }, [edges, nodes]
+    }, [edges, nodes, treeProps.couples]
     );
 
     useLayoutEffect(() => {
