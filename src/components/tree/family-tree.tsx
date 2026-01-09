@@ -39,21 +39,19 @@ const elkOptions = {
     'elk.spacing.nodeNode': '40',
     'elk.direction': 'DOWN',
     'elk.margins': '200',
-    // Используем NODES_AND_EDGES для учета порядка узлов и ребер
-    'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
+    // Используем PREFER_EDGES для оптимизации на основе связей (родители ближе к детям)
+    'elk.layered.considerModelOrder.strategy': 'PREFER_EDGES',
     'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
-    // Принудительно соблюдаем порядок модели узлов при минимизации пересечений
+    // Используем LAYER_SWEEP без принудительного порядка для оптимизации связей
     'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
-    'elk.layered.crossingMinimization.forceNodeModelOrder': 'true',
     'elk.layered.thoroughness': '7',
     'elk.layered.priority.direction': '1',
     'elk.layered.priority.straightness': '1',
     'elk.layered.nodePlacement.bk.fixedAlignment': 'BALANCED',
     'elk.layered.nodePlacement.bk.edgeStraightening': 'IMPROVE_STRAIGHTNESS',
-    // Устанавливаем влияние порядка модели на максимум
-    'elk.layered.considerModelOrder.crossingCounterNodeInfluence': '0',
-    'elk.layered.considerModelOrder.crossingCounterPortInfluence': '0',
-    'elk.layered.considerModelOrder.portModelOrder': 'true',
+    // Устанавливаем влияние порядка модели
+    'elk.layered.considerModelOrder.crossingCounterNodeInfluence': '0.5',
+    'elk.layered.considerModelOrder.crossingCounterPortInfluence': '0.5',
 };
 
 const personWidth = 500;
@@ -302,10 +300,18 @@ const getLayoutedElements = (nodes: ElkNode[], edges: ElkExtendedEdge[], options
         }
     });
 
+    // Сортируем узлы по orderId перед передачей в ELK
+    // Это гарантирует, что порядок модели будет соблюден
+    const sortedNodes = [...nodes].sort((a, b) => {
+        const orderA = orderMap.get(a.id) ?? Infinity;
+        const orderB = orderMap.get(b.id) ?? Infinity;
+        return orderA - orderB;
+    });
+
     const graph: ElkNode = {
         id: 'root',
         layoutOptions: options,
-        children: nodes.map((node) => {
+        children: sortedNodes.map((node) => {
             const nodePriority = priorityMap.get(node.id);
             const nodeOrder = orderMap.get(node.id);
             const nodeOptions: LayoutOptions = {
