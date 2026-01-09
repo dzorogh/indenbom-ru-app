@@ -44,36 +44,6 @@ const personWidth = 500;
 const personHeight = 150;
 const personHeightSmall = 80;
 
-const isSecondPerson = (personId: number, { couples, people, rootPersonId }: FamilyTreeProps) => {
-    const person = people.find(p => p.id === personId);
-
-    if (!person) {
-        return true
-    }
-
-    if (person.id === rootPersonId) {
-        return false;
-    }
-
-    const noParents = couples.filter(couple => {
-        return couple.id === person.parent_couple_id
-    }).length === 0;
-
-    const rootPerson = people.find(p => p.id === rootPersonId);
-
-    const rootCouple = couples.find(c => c.id === rootPerson.parent_couple_id);
-
-    const isRootCouple = rootCouple?.wife_id === personId || rootCouple?.husband_id === personId;
-
-    // All without parents, except people of root person
-
-    return noParents && !isRootCouple;
-}
-
-const getRootCouple = ({ couples, people, rootPersonId }: FamilyTreeProps) => {
-    const rootPerson = people.find(p => p.id === rootPersonId);
-    return couples.find(c => c.id === rootPerson?.parent_couple_id);
-}
 
 const coupleNode = (couple: Couple): Node => {
     return {
@@ -89,7 +59,7 @@ const coupleNode = (couple: Couple): Node => {
     }
 }
 
-const personNode = (person: Person, isRootPerson: boolean, isSmall: boolean): Node => {
+const personNode = (person: Person, isRootPerson: boolean): Node => {
     return {
         id: 'person-' + person.id,
         data: {
@@ -108,7 +78,7 @@ const personNode = (person: Person, isRootPerson: boolean, isSmall: boolean): No
 
 const getInitialNodes = (treeProps: FamilyTreeProps): Node[] => {
     const nodes: Node[] = treeProps.people.map((person) => {
-        return personNode(person, person.id === treeProps.rootPersonId, isSecondPerson(person.id, treeProps));
+        return personNode(person, person.id === treeProps.rootPersonId);
     });
 
     treeProps.couples.forEach(couple => {
@@ -134,7 +104,7 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 target: 'couple-' + couple.id,
                 type: 'couple',
                 selectable: false,
-                targetHandle: 'left'
+                targetHandle: 'top'
             });
         }
 
@@ -146,7 +116,7 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 target: 'couple-' + couple.id,
                 type: 'couple',
                 selectable: false,
-                targetHandle: 'right'
+                targetHandle: 'top'
             });
         }
 

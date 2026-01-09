@@ -14,15 +14,8 @@ export default memo(function FamilyCoupleNode(props: NodeProps<CoupleNode>) {
 
             <Handle
                 type="target"
-                position={Position.Left}
-                id="left"
-                isConnectable={false}
-            />
-
-            <Handle
-                type="target"
-                position={Position.Right}
-                id="right"
+                position={Position.Top}
+                id="top"
                 isConnectable={false}
             />
 
