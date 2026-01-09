@@ -1,6 +1,7 @@
 // this implementation can be a bit jumpy for larger tables, but should be good for most and easily adaptable if not
 // this file is where your logic for how when ellipses are shown and other fiddly bits
 
+import { type ReactElement } from "react";
 import { PaginationEllipsis, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 
 export const generatePaginationLinks = (
@@ -8,7 +9,7 @@ export const generatePaginationLinks = (
     totalPages: number,
     onPageChange: (page: number) => void
 ) => {
-    const pages: JSX.Element[] = [];
+    const pages: ReactElement[] = [];
     if (totalPages <= 6) {
         for (let i = 1; i <= totalPages; i++) {
             pages.push(
