@@ -21,14 +21,12 @@ import {Structure03Icon} from "hugeicons-react";
 import Link from "next/link";
 
 type Props = {
-    params: { id: string }
-    searchParams: { [key: string]: string | string[] | undefined }
+    params: Promise<{ id: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export async function generateMetadata(
-    {params, searchParams}: Props,
-    parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
+    const params = await props.params;
     // read route params
     const id = params.id
 
@@ -65,7 +63,8 @@ export async function generateStaticParams() {
     return (await peopleResponse.json())['data'].map(id => ({id: String(id)}));
 }
 
-export default async function Page({params}: { params: { id: number } }) {
+export default async function Page(props: { params: Promise<{ id: number }> }) {
+    const params = await props.params;
     const person = await getData(String(params.id)) as Person;
 
     return (

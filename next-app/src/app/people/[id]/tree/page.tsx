@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/breadcrumb";
 
 type Props = {
-    params: { id: string }
-    searchParams: { [key: string]: string | string[] | undefined }
+    params: Promise<{ id: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 // export async function generateMetadata(
@@ -37,10 +37,8 @@ type Props = {
 //     }
 // }
 
-export async function generateMetadata(
-    {params, searchParams}: Props,
-    parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
+    const params = await props.params;
     // read route params
     const id = params.id
 
@@ -77,7 +75,8 @@ export async function generateStaticParams() {
     return (await peopleResponse.json())['data'].map(id => ({id: String(id)}));
 }
 
-export default async function Page({params}: Props) {
+export default async function Page(props: Props) {
+    const params = await props.params;
     const {couples, people} = await getData(params.id)
 
     const rootPerson = people.find(p => p.id === Number(params.id))
