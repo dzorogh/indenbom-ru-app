@@ -21,7 +21,9 @@ export default function Header() {
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
-                            <Link href="/" legacyBehavior passHref>
+                            <Link href="/">
+                                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+                                }
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     <Logo className="mr-2 h-6 w-6"/>
                                     INDENBOM
@@ -29,7 +31,9 @@ export default function Header() {
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href="/people" legacyBehavior passHref>
+                            <Link href="/people">
+                                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+                                }
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     Все люди
                                 </NavigationMenuLink>
@@ -39,14 +43,18 @@ export default function Header() {
                             <Separator orientation="vertical"/>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href="/people/1/tree" legacyBehavior passHref>
+                            <Link href="/people/1/tree">
+                                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+                                }
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     Л. А. Инденбом
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href="/people/31/tree" legacyBehavior passHref>
+                            <Link href="/people/31/tree">
+                                {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+                                }
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     С. С. Яровой
                                 </NavigationMenuLink>
@@ -57,5 +65,5 @@ export default function Header() {
                 </NavigationMenu>
             </div>
         </div>
-    )
+    );
 }
