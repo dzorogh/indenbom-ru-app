@@ -12,7 +12,9 @@ import {
     ReactFlowProvider,
     useEdgesState,
     useNodesState,
-    useReactFlow, Panel,
+    useReactFlow, Panel, EdgeProps,
+    ConnectionLineType,
+    Edge,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Couple, NodeType, Person } from "@/types";
@@ -20,7 +22,6 @@ import FamilyCoupleNode from "@/components/tree/family-couple-node";
 import FamilyPersonNode from "@/components/tree/family-person-node";
 import FamilyPersonNodeSmall from "@/components/tree/family-person-node-small";
 import FamilyRootNode from "@/components/tree/family-root-node";
-import FamilyCoupleEdge from "@/components/tree/family-couple-edge";
 import ELK, { ElkExtendedEdge, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
 import { Button } from "@/components/ui/button";
 import { CenterFocusIcon } from "hugeicons-react";
@@ -51,8 +52,8 @@ const coupleNode = (couple: Couple): Node => {
         data: {
             couple,
         },
-        width: personHeightSmall,
-        height: personHeightSmall,
+        width: 1,
+        height: 1,
         position: { x: 0, y: 0 },
         type: NodeType.CoupleNode,
         selectable: false,
@@ -90,7 +91,7 @@ const getInitialNodes = (treeProps: FamilyTreeProps): Node[] => {
 
 const getInitialEdges = (treeProps: FamilyTreeProps) => {
     return treeProps.couples.flatMap(couple => {
-        const coupleEdges = [];
+        const coupleEdges = [] as Edge[];
 
         const children = treeProps.people.filter(
             person => person.parent_couple_id === couple.id
@@ -103,7 +104,8 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 source: 'person-' + couple.husband_id,
                 target: 'couple-' + couple.id,
                 selectable: false,
-                targetHandle: 'top'
+                targetHandle: 'top',
+                type: ConnectionLineType.SmoothStep
             });
         }
 
@@ -114,7 +116,8 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 source: 'person-' + couple.wife_id,
                 target: 'couple-' + couple.id,
                 selectable: false,
-                targetHandle: 'top'
+                targetHandle: 'top',
+                type: ConnectionLineType.SmoothStep
             });
         }
 
@@ -125,6 +128,7 @@ const getInitialEdges = (treeProps: FamilyTreeProps) => {
                 source: 'couple-' + couple.id,
                 target: 'person-' + child.id,
                 selectable: false,
+                type: ConnectionLineType.SmoothStep
             });
         });
 
@@ -201,10 +205,6 @@ const nodeTypes: NodeTypes = {
     [NodeType.RootNode]: FamilyRootNode,
 }
 
-const edgeTypes: EdgeTypes = {
-    couple: FamilyCoupleEdge
-}
-
 const LayoutFlow = (treeProps: FamilyTreeProps) => {
     const { fitView, getViewport, setViewport, getNode } = useReactFlow();
 
@@ -253,7 +253,6 @@ const LayoutFlow = (treeProps: FamilyTreeProps) => {
             nodes={nodes}
             edges={edges}
             nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
             nodesConnectable={false}
             nodesDraggable={false}
             minZoom={0.1}

@@ -7,9 +7,9 @@ export default memo(function FamilyCoupleNode(props: NodeProps<CoupleNode>) {
     return (
         <>
             <div className="flex justify-center h-full w-full">
-                <div className="rounded-full h-full aspect-square  bg-secondary border flex items-center justify-center">
+                {/* <div className="rounded-full h-full aspect-square bg-secondary border flex items-center justify-center">
                     <Add01Icon />
-                </div>
+                </div> */}
             </div>
 
             <Handle
