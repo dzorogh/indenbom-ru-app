@@ -8,7 +8,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'admin.indenbom.ru',
         port: '',
-        pathname: '/storage/**',
+        pathname: '**',
       },
       {
         protocol: 'https',
